@@ -1,6 +1,16 @@
 "use strict";
 
-function parse(text){
+const consoleId = 'sqlConsole';
+const consoleTextArea = 'sqlQuery';
+
+function parse(){
+
+  var form = document.getElementById(consoleId);
+  var text = form[consoleTextArea].value;
+
+  // console.log('got: ');
+  // console.log(text);
+
   var multiline = true;
   var lines = text.split('\n');
   var query = lines[0];
@@ -51,4 +61,9 @@ function parse(text){
     }
   }
   return result;
+}
+
+function clearConsole(){
+  var textarea = document.getElementsByName(consoleTextArea)[0];
+  textarea.value = '';
 }
