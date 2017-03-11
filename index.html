@@ -51,7 +51,14 @@
       </ul>
       <ul class="nav navbar-nav pull-right">
         <li>
-          <a href="#" id="nbAcctDD" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-import"></i>Import<i class="icon-sort-down"></i></a>
+          <a href="#" class="dropdown-toggle">
+            Import CSV :
+          </a>
+        </li>
+        <li>
+          <a href="#" class="dropdown-toggle">
+            <input type="file" id="csvFileInput" onchange="handleFiles(this.files)" accept=".csv">
+          </a>
         </li>
       </ul>
     </nav>
@@ -116,6 +123,8 @@
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
   <!-- Begin custom js -->
+  <script type="text/javascript" src="js/parser.js"></script>
+  <script type="text/javascript" src="js/csv.js"></script>
   </body>
 
 </html>
