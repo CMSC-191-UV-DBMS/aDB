@@ -1,15 +1,10 @@
-"use strict";
-
-const consoleId = 'sqlConsole';
-const consoleTextArea = 'sqlQuery';
+'use strict';
 
 function parse(){
+  var text = getConsoleText();
 
-  var form = document.getElementById(consoleId);
-  var text = form[consoleTextArea].value;
-
-  // console.log('got: ');
-  // console.log(text);
+  console.log('got: ');
+  console.log(text);
 
   var multiline = true;
   var lines = text.split('\n');
@@ -61,9 +56,4 @@ function parse(){
     }
   }
   return result;
-}
-
-function clearConsole(){
-  var textarea = document.getElementsByName(consoleTextArea)[0];
-  textarea.value = '';
 }
