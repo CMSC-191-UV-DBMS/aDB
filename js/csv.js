@@ -28,20 +28,87 @@ function loadHandler(event) {
 function processData(csv) {
   var allTextLines = csv.split(/\r\n|\n/);
   var lines = [];
+  var text;
   for (var i=0; i<allTextLines.length; i++) {
     var data = allTextLines[i].split(';');
-    var tarr = [];
+    var textArray = [];
     for (var j=0; j<data.length; j++) {
-        tarr.push(data[j]);
+        textArray.push(data[j]);
     }
-    lines.push(tarr);
+    // text = textArray+'\n';
+    // if(text.startsWith(",")){
+      // text.splice(0, 1);
+    // }
+    lines.push(textArray);
   }
-  // console.log(lines);
   return lines;
 }
 
-function errorHandler(evt) {
-  if(evt.target.error.name == "NotReadableError") {
-      alert("Canno't read file !");
+function errorHandler(ev) {
+  if(ev.target.error.name == "NotReadableError") {
+    alert("Cannot read file!");
+    clearConsoleText();
   }
+}
+
+// read CSV file and display as table
+// https://code.tutsplus.com/tutorials/parsing-a-csv-file-with-jaascript--cms-25626
+function successFunction(data){
+
+  var allRows = data.trim().split(/\s*\r?\n+|\s*\r+\n?/);
+  var table = '<table class="table-responsive table table-striped table-hover">';
+
+  for(var singleRow=0; singleRow<allRows.length; singleRow++){
+    if(singleRow===0){
+      table+= '<thead>';
+      table+= '<tr>';
+    }
+    else{
+      table+= '<tr>';
+    }
+    var rowCells = allRows[singleRow].trim().split(',');
+    for(var rowCell=0; rowCell<rowCells.length; rowCell++){
+      if(singleRow===0){
+        table+= '<th>';
+        table+= rowCells[rowCell];
+        table+= '</th>';
+      }
+      else{
+        table+= '<td>';
+        table+= rowCells[rowCell];
+        table+= '</td>';
+      }
+    }
+
+    if(singleRow===0){
+      table+= '</tr>';
+      table+= '</thead>';
+      table+= '<tbody>';
+    }
+    else{
+      table+= '</tr>';
+    }
+  }
+  table+= '</tbody>';
+  table+= '</table></div>';
+
+  var div = document.createElement('div');
+  div.setAttribute('id', 'tableView');
+  div.innerHTML = table;
+
+
+  if(allRows.length === 1){
+    var msg = '<p class="well">Table is empty.</p>';
+    div.innerHTML = msg;
+  }
+
+  $('#main').html(div);
+}
+
+
+function readCSV(tablename){
+  $.ajax({
+    url: 'tables/'+tablename+'.csv',
+    dataType: 'text'
+  }).done(successFunction);
 }

@@ -105,3 +105,8 @@ form,
   padding: 0;
   height: 100%;
 }
+
+#tableView {
+  padding-top: 1.25em;
+  padding-left: 0.25em;
+}
