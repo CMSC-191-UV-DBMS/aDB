@@ -1,22 +1,21 @@
 'use strict';
 
+// CSV upload : https://mounirmesselmeni.github.io/2012/11/20/reading-csv-file-with-javascript-and-html5-file-api/
 function handleFiles(files) {
-  // Check for the various File API support.
-  if (window.FileReader) {
-      // FileReader are supported.
-      getAsText(files[0]);
+  if (window.FileReader) {  // Check for the various File API support.
+    getAsText(files[0]);    // FileReader is supported.
   } else {
-      alert('FileReader are not supported in this browser.');
+    alert('FileReader are not supported in this browser.');
   }
 }
 
 function getAsText(fileToRead) {
   var reader = new FileReader();
-  // Read file into memory as UTF-8
-  reader.readAsText(fileToRead);
-  // Handle errors load
-  reader.onload = loadHandler;
-  reader.onerror = errorHandler;
+
+  reader.readAsText(fileToRead);  // Read file into memory as UTF-8
+
+  reader.onload = loadHandler;    // Load
+  reader.onerror = errorHandler;  // Error handling
 }
 
 function loadHandler(event) {
@@ -111,4 +110,9 @@ function readCSV(tablename){
     url: 'tables/'+tablename+'.csv',
     dataType: 'text'
   }).done(successFunction);
+}
+
+function showHome(){
+  var home = '<div class="page-header"><h3>aDB: A single-user prototype DBMS</h3></div><p>Click on the table names on the right to view their contents.</p><p>Execute your SQL query below on the console.</p><p>Import files from the upper right-hand corner.</p>';
+  $('#main').html(home);
 }

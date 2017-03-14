@@ -1,0 +1,23 @@
+{
+  "name": "adb-dbms",
+  "version": "1.0.0",
+  "description": "Single user prototype DBMS for CMSC 191",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CMSC-191-UV-DBMS/aDB.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CMSC-191-UV-DBMS/aDB/issues"
+  },
+  "homepage": "https://github.com/CMSC-191-UV-DBMS/aDB#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
