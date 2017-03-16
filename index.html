@@ -8,6 +8,10 @@
 
   <title>aDB</title>
 
+  <!-- favicon -->
+  <link rel="shortcut icon" href="favicon.ico?v=2" type="image/x-icon">
+  <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
+
   <!-- Bootstrap -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/bootstrap-theme.min.css" rel="stylesheet">
@@ -85,19 +89,19 @@
           <li class="list-group">
             <ul>
               <li>
-                <a class="list-group-item" href="#" onclick="readCSV(tablePath.coursec)">COURSEC</a>
+                <a class="list-group-item" href="#" onclick="displayTable(tablePath.coursec)">COURSEC</a>
               </li>
               <li>
-                <a class="list-group-item" href="#" onclick="readCSV(tablePath.courseoffering)">COURSEOFFERING</a>
+                <a class="list-group-item" href="#" onclick="displayTable(tablePath.courseoffering)">COURSEOFFERING</a>
               </li>
               <li>
-                <a class="list-group-item" href="#" onclick="readCSV(tablePath.studcourse)">STUDCOURSE</a>
+                <a class="list-group-item" href="#" onclick="displayTable(tablePath.studcourse)">STUDCOURSE</a>
               </li>
               <li>
-                <a class="list-group-item" href="#" onclick="readCSV(tablePath.student)">STUDENT</a>
+                <a class="list-group-item" href="#" onclick="displayTable(tablePath.student)">STUDENT</a>
               </li>
               <li>
-                <a class="list-group-item" href="#" onclick="readCSV(tablePath.studenthistory)">STUDENTHISTORY</a>
+                <a class="list-group-item" href="#" onclick="displayTable(tablePath.studenthistory)">STUDENTHISTORY</a>
               </li>
             </ul>
 
@@ -141,8 +145,8 @@
 
   <!-- Begin custom js -->
   <script type="text/javascript" src="js/console.js"></script>
-  <script type="text/javascript" src="js/parser.js"></script>
   <script type="text/javascript" src="js/csv.js"></script>
+  <script type="text/javascript" src="js/parser.js"></script>
   </body>
 
 </html>

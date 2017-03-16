@@ -114,3 +114,8 @@ form,
   padding-top: 1.25em;
   padding-left: 0.25em;
 }
+
+#sidebar ul {
+  height: 100%;
+  padding: 0;
+}

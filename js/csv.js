@@ -20,27 +20,8 @@ function getAsText(fileToRead) {
 
 function loadHandler(event) {
   var csv = event.target.result;
-  var data = processData(csv);
-  setConsoleText(data);
-}
-
-function processData(csv) {
-  var allTextLines = csv.split(/\r\n|\n/);
-  var lines = [];
-  var text;
-  for (var i=0; i<allTextLines.length; i++) {
-    var data = allTextLines[i].split(';');
-    var textArray = [];
-    for (var j=0; j<data.length; j++) {
-        textArray.push(data[j]);
-    }
-    // text = textArray+'\n';
-    // if(text.startsWith(",")){
-      // text.splice(0, 1);
-    // }
-    lines.push(textArray);
-  }
-  return lines;
+  csv = csv.trim();
+  setConsoleText(csv);
 }
 
 function errorHandler(ev) {
@@ -52,68 +33,109 @@ function errorHandler(ev) {
 
 // read CSV file and display as table
 // https://code.tutsplus.com/tutorials/parsing-a-csv-file-with-jaascript--cms-25626
-function successFunction(data){
+function csvToArray(csvStr){
 
-  var allRows = data.trim().split(/\s*\r?\n+|\s*\r+\n?/);
-  var table = '<table class="table table-responsive table-striped table-hover">';
+  var data = [];
+  var row, rowCells, content;
+
+  var allRows = csvStr.trim().split(/\s*\r?\n+|\s*\r+\n?/);
 
   for(var singleRow=0; singleRow<allRows.length; singleRow++){
-    if(singleRow===0){
-      table+= '<thead>';
-      table+= '<tr>';
+    row = [];
+
+    rowCells = allRows[singleRow].trim().split(',');
+
+    for(var rowCell=0; rowCell<rowCells.length; rowCell++){
+      content = trimQuotes(rowCells[rowCell]);
+      row.push(content);
     }
-    if(singleRow===1){
-      table+= '<tbody>';
-      table+= '<tr>';
+
+    data.push(row);
+  }
+  return data;
+}
+
+function readCSV(filePath){
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: filePath,
+      dataType: 'text'
+    })
+    .then(
+          (data) => {
+            var array = csvToArray(data);
+            resolve(array);
+          },
+          (error) => {
+            reject(error);
+          });
+  });
+}
+
+function buildView(data){
+  var table = '<table class="table table-responsive table-striped table-hover">';
+
+  for(var row=0; row<data.length; row++){
+    if(row===0){
+      table+= '<thead> <tr>';
+    }
+    if(row===1){
+      table+= '<tbody> <tr>';
     }
     else{
       table+= '<tr>';
     }
-    var rowCells = allRows[singleRow].trim().split(',');
-    for(var rowCell=0; rowCell<rowCells.length; rowCell++){
-      var content = trimQuotes(rowCells[rowCell]);
 
-      if(singleRow===0){
-        table+= '<th>';
-        table+= content;
-        table+= '</th>';
+    for(var cell=0; cell<data[row].length; cell++){
+      var content = trimQuotes(data[row][cell]);
+
+      if(row===0){
+        table+= '<th>' + content + '</th>';
       }
       else{
-        table+= '<td>';
-        table+= content;
-        table+= '</td>';
+        table+= '<td>' + content + '</td>';
       }
     }
 
-    if(singleRow===0){
-      table+= '</tr>';
-      table+= '</thead>';
+    if(row===0){
+      table+= '</tr> </thead>';
     }
     else{
       table+= '</tr>';
     }
   }
-  table+= '</tbody>';
-  table+= '</table>';
+  table+= '</tbody> </table>';
+
+  return table;
+}
+
+function displayTable(filePath){
 
   var div = document.createElement('div');
   div.setAttribute('id', 'tableView');
-  div.innerHTML = table;
 
-  if(allRows.length === 1){
-    var msg = '<p class="well">Table is empty.</p>';
-    div.innerHTML = msg;
-  }
+  readCSV(filePath)
+    .then(
+          (data) => {
+            // console.log(data);
+            var table = buildView(data);
 
-  $('#main').html(div);
-}
+            div.innerHTML = table;
 
+            if(data.length === 1){
+              var msg = '<p class="well">Table is empty.</p>';
+              div.innerHTML = msg;
+            }
 
-function readCSV(filePath){
-  $.ajax({
-    url: filePath,
-    dataType: 'text'
-  }).done(successFunction);
+            $('#main').html(div);
+          },
+          (error) => {
+            // console.log(error);
+            var msg = '<p class="alert alert-danger">Oops something went wrong.</p>';
+            div.innerHTML = msg;
+
+            $('#main').html(div);
+          });
 }
 
 function showHome(){

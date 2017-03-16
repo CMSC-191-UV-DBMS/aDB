@@ -56,14 +56,120 @@ function parse(){
     }
   }
 
+  // test select, modify 'parsed' data in function for now
+  executeSelect({});
+
   // test append, modify 'parsed' data in function for now
-  executeInsert({});
+  // executeInsert({});
 
   return result;
 }
 
-function executeSelect(){
+function arrayToJson(data){
+  var json = [];
 
+  for(var row=1; row<data.length; row++){
+    var item = {};
+    for(var cell=0; cell<data[row].length; cell++){
+      item[data[0][cell]] = data[row][cell]
+    }
+    json.push(item);
+  }
+
+  return json;
+}
+
+function executeSelect(query){
+  var div = document.createElement('div');
+  div.setAttribute('id', 'tableView');
+
+  // expected format & sample equivalent queries
+
+  // SELECT * FROM student;
+  query = {
+    tablename: 'student',
+    select: [
+      'StudNo', 'StudentName', 'Birthday', 'Degree', 'Major', 'UnitsEarned'
+    ],
+    where: {}
+  };
+
+  // SELECT StudNo, StudentName, Birthday, Degree FROM student where UnitsEarned = 78;
+  // query = {
+  //   tablename: 'student',
+  //   select: [
+  //     'StudNo', 'StudentName', 'Birthday', 'Degree'
+  //   ],
+  //   where: {
+  //     'UnitsEarned' : '78'
+  //   }
+  // };
+
+  // SELECT StudNo FROM student where UnitsEarned = 74;
+  // query = {
+  //   tablename: 'student',
+  //   select: ['StudNo'],
+  //   where: {
+  //     'UnitsEarned': "74"
+  //   }
+  // };
+
+  // get from file
+  readCSV(tablePath[query.tablename])
+    .then(
+          (data) => {
+            // console.log(data);
+            // console.log(data);
+
+            var headers = data[0];
+            data = arrayToJson(data);
+
+            // console.log(data);
+
+            // filter data
+
+            var whereCol = Object.keys(query.where)[0];
+            var whereVal = whereCol ? query.where[whereCol] : null;
+
+
+            // filter by where
+            var result = [];
+            for(var i=0; i<data.length && whereCol; i++){
+              if(data[i][whereCol] === whereVal){
+                result.push(data[i]);
+              }
+            }
+            // console.log(result);
+
+            // filter by column
+            var row;
+            data = [query.select];
+            for(var i=0; i<result.length; i++){
+              row = [];
+              for(var j=0; j<query.select.length; j++){
+                row.push(result[i][query.select[j]]);
+              }
+              data.push(row);
+            }
+            // console.log(data);
+
+            var table = buildView(data);
+            div.innerHTML = table;
+
+            if(data.length === 1){
+              var msg = '<p class="well">Table is empty.</p>';
+              div.innerHTML = msg;
+            }
+
+            $('#main').html(div);
+          },
+          (error) => {
+            // console.log(error);
+            var msg = '<p class="alert alert-danger">Oops something went wrong.</p>';
+            div.innerHTML = msg;
+
+            $('#main').html(div);
+          });
 }
 
 function executeInsert(query){
