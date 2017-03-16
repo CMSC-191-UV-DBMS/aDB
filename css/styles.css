@@ -23,7 +23,8 @@ body {
 
 #main {
   position: relative;
-  height: 100%;
+  /*height: 100%;*/
+  height: 75%;
   overflow-y: auto;
   padding: 0 15px;
 }
@@ -83,11 +84,14 @@ body {
 }
 
 .footer {
-  background-color:#ffffff;
   bottom:0;
   position:fixed;
   padding:10px;
   height: 25%;
+  background-color: #f8f8f8;
+  border-top-color: #e7e7e7;
+  border-width: 1px;
+  border-top-style: solid;
 }
 
 /* end bootply styles from http://www.bootply.com/87811 */
