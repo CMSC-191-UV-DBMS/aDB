@@ -55,11 +55,15 @@ function errorHandler(ev) {
 function successFunction(data){
 
   var allRows = data.trim().split(/\s*\r?\n+|\s*\r+\n?/);
-  var table = '<table class="table-responsive table table-striped table-hover">';
+  var table = '<table class="table table-responsive table-striped table-hover">';
 
   for(var singleRow=0; singleRow<allRows.length; singleRow++){
     if(singleRow===0){
       table+= '<thead>';
+      table+= '<tr>';
+    }
+    if(singleRow===1){
+      table+= '<tbody>';
       table+= '<tr>';
     }
     else{
@@ -67,14 +71,16 @@ function successFunction(data){
     }
     var rowCells = allRows[singleRow].trim().split(',');
     for(var rowCell=0; rowCell<rowCells.length; rowCell++){
+      var content = trimQuotes(rowCells[rowCell]);
+
       if(singleRow===0){
         table+= '<th>';
-        table+= rowCells[rowCell];
+        table+= content;
         table+= '</th>';
       }
       else{
         table+= '<td>';
-        table+= rowCells[rowCell];
+        table+= content;
         table+= '</td>';
       }
     }
@@ -82,19 +88,17 @@ function successFunction(data){
     if(singleRow===0){
       table+= '</tr>';
       table+= '</thead>';
-      table+= '<tbody>';
     }
     else{
       table+= '</tr>';
     }
   }
   table+= '</tbody>';
-  table+= '</table></div>';
+  table+= '</table>';
 
   var div = document.createElement('div');
   div.setAttribute('id', 'tableView');
   div.innerHTML = table;
-
 
   if(allRows.length === 1){
     var msg = '<p class="well">Table is empty.</p>';
@@ -105,9 +109,9 @@ function successFunction(data){
 }
 
 
-function readCSV(tablename){
+function readCSV(filePath){
   $.ajax({
-    url: 'tables/'+tablename+'.csv',
+    url: filePath,
     dataType: 'text'
   }).done(successFunction);
 }
@@ -115,4 +119,14 @@ function readCSV(tablename){
 function showHome(){
   var home = '<div class="page-header"><h3>aDB: A single-user prototype DBMS</h3></div><p>Click on the table names on the right to view their contents.</p><p>Execute your SQL query below on the console.</p><p>Import files from the upper right-hand corner.</p>';
   $('#main').html(home);
+}
+
+function trimQuotes(text){
+  if (text.charAt(0) === '"'){
+    text = text.substr(1)
+  }
+  if(text.charAt(text.length-1) === '"'){
+    text = text.substr(0, text.length-1);
+  }
+  return text;
 }
