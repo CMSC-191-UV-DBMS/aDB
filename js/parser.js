@@ -55,5 +55,88 @@ function parse(){
       // results = executeSelect(parsed);
     }
   }
+
+  // test append, modify 'parsed' data in function for now
+  executeInsert({});
+
   return result;
+}
+
+function executeSelect(){
+
+}
+
+function executeInsert(query){
+
+  // expected format:
+
+  // student
+  query = {
+    tablename: 'student',
+    values: {
+      'StudNo' : '2013-13579',
+      'StudentName' : 'Carmela',
+      'Birthday' : '7-14-1996',
+      'Degree' : 'BSCS',
+      'UnitsEarned' : '78'
+    }
+  };
+
+  // coursec
+  // query = {
+  //   tablename: 'coursec',
+  //   values: {
+  //     'No': 'CMSC 142',
+  //     'CTitle': 'Analysis of Algorithms',
+  //     'CDesc': 'Big O',
+  //     'NoOfUnits': 3,
+  //     'HasLab': 1,
+  //     'SemOffered': '1st'
+  //   }
+  // };
+
+  // courseoffering
+  // query = {
+  //   tablename: 'courseoffering',
+  //   values: {
+  //     'Semester': '1st',
+  //     'AcadYear': 2016,
+  //     'CNo': 'CMSC 142',
+  //     'Section': 'UV',
+  //     'Time': '16:00',
+  //     'MaxStud': 100
+  //   }
+  // };
+
+  // studcourse
+  // query = {
+  //   tablename: 'studcourse',
+  //   values: {
+  //     'StudNo': '2013-24680',
+  //     'CNo': 'CMSC 142',
+  //     'Semester': '1st',
+  //     'AcadYear': 2016,
+  //   }
+  // };
+
+  // studenthistory
+  // query = {
+  //   tablename: 'studenthistory',
+  //   values: {
+  //     'StudNo': '2013-24680',
+  //     'Description': 'Drop',
+  //     'Action': 'Rejected',
+  //     'DateFiled': '2017-02-28',
+  //     'DateResolved': '2017-03-11'
+  //   }
+  // };
+
+  $.ajax({
+    url: '/tables/'+query.tablename,
+    type: 'POST',
+    dataType: 'json',
+    data: JSON.stringify(query.values),
+    contentType: 'application/json'
+    // success: readCSV(tablePath[query.tablename])
+  });
 }
