@@ -119,7 +119,6 @@ function executeSelect(query){
     .then(
           (data) => {
             // console.log(data);
-            // console.log(data);
 
             var headers = data[0];
             data = arrayToJson(data);
@@ -127,19 +126,22 @@ function executeSelect(query){
             // console.log(data);
 
             // filter data
-
             var whereCol = Object.keys(query.where)[0];
             var whereVal = whereCol ? query.where[whereCol] : null;
 
-
             // filter by where
             var result = [];
-            for(var i=0; i<data.length && whereCol; i++){
-              if(data[i][whereCol] === whereVal){
-                result.push(data[i]);
+            if(whereCol){
+              for(var i=0; i<data.length; i++){
+                if(data[i][whereCol] === whereVal){
+                  result.push(data[i]);
+                }
               }
+              // console.log(result);
             }
-            // console.log(result);
+            else{
+              result = data;
+            }
 
             // filter by column
             var row;
