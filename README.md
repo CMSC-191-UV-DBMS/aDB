@@ -4,29 +4,19 @@ A prototype DBMS with a predefined set of minimum features. It is meant to be us
 
 ### Supported features:
 
-#####DML statements
+##### DML statements
  - INSERT
  - SELECT
 
-#####Query clauses
+##### Query clauses
  - WHERE clauses are single condition only
 
-###Usage:
-Since Chrome only allows cross origin requests are only supported for protocol schemes, (```file://``` not included), for us to read local CSV files, we need to run a simple server at the project root either via python or Node.js:
+### Usage:
+First, run ```npm install``` to install the necessary modules.
 
-Then proceed to ```localhost:8000```.
+Since Chrome only allows cross origin requests are only supported for protocol schemes, (```file://``` not included), for us to read and write to  the local CSV files, we need to run a simple server.
 
->This is needed only when you want to view the project using Chrome. You do not have to do this when viewing the project using Firefox.
-
-#####Python
 ```
-    $ python -m SimpleHTTPServer
+$ node server.js
 ```
-
-> You do not have to install anything. Details explained [here](http://stackoverflow.com/a/23118676).
-
-#####Node.js
-```
-    $ node server.js
-```
-> Do not forget to run ```npm install``` if you are going to do it via node.
+Proceed to ```localhost:8000```
