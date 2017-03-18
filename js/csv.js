@@ -147,7 +147,7 @@ function displayTable(filePath){
               search: {
                 caseInsensitive: true,
                 regex: true
-              }
+              },
             });
           },
           (error) => {
@@ -172,4 +172,11 @@ function trimQuotes(text){
     text = text.substr(0, text.length-1);
   }
   return text;
+}
+
+function setTableToImport(table){
+  console.log(table);
+  $("#csvFileInput").prop('disabled', false);
+
+  $('#csvFileInput').trigger('click');
 }

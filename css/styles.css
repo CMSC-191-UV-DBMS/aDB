@@ -92,6 +92,7 @@ body {
   border-top-color: #e7e7e7;
   border-width: 1px;
   border-top-style: solid;
+  z-index: 1000;
 }
 
 /* end bootply styles from http://www.bootply.com/87811 */
@@ -118,4 +119,8 @@ form,
 #sidebar ul {
   height: 100%;
   padding: 0;
+}
+
+#fileInput {
+  display: none;
 }

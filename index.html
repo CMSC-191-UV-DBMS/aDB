@@ -64,19 +64,24 @@
           <ul class="dropdown-menu">
             <li><a href="#">Click on the table names on the right to view their contents.</a></li>
             <li><a href="#">Execute your SQL query below on the console.</a></li>
-            <li><a href="#">Import files from the upper right-hand corner.</a></li>
+            <li><a href="#">Import CSV files by selecting the table from the list on the upper right-hand corner</a></li>
           </ul>
         </li>
       </ul>
       <ul class="nav navbar-nav pull-right">
-        <li>
-          <a href="#" class="dropdown-toggle">
-            Import CSV :
-          </a>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Select table to import CSV <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#" onclick="setTableToImport(course)">COURSE</a></li>
+            <li><a href="#" onclick="setTableToImport(courseoffering)">COURSEOFFERING</a></li>
+            <li><a href="#" onclick="setTableToImport(studcourse)">STUDCOURSE</a></li>
+            <li><a href="#" onclick="setTableToImport(student)">STUDENT</a></li>
+            <li><a href="#" onclick="setTableToImport(studenthistory)">STUDENTHISTORY</a></li>
+          </ul>
         </li>
-        <li>
+        <li id="fileInput">
           <a href="#" class="dropdown-toggle">
-            <input type="file" id="csvFileInput" onchange="handleFiles(this.files)" accept=".csv">
+            <input type="file" id="csvFileInput" disabled onchange="handleFiles(this.files)" accept=".csv">
           </a>
         </li>
       </ul>
@@ -92,19 +97,19 @@
           <li class="list-group">
             <ul>
               <li>
-                <a class="list-group-item" href="#" onclick="displayTable(tablePath.coursec)">COURSEC</a>
+                <a class="list-group-item" href="#" onclick="displayTable(course.path)">COURSE</a>
               </li>
               <li>
-                <a class="list-group-item" href="#" onclick="displayTable(tablePath.courseoffering)">COURSEOFFERING</a>
+                <a class="list-group-item" href="#" onclick="displayTable(courseoffering.path)">COURSEOFFERING</a>
               </li>
               <li>
-                <a class="list-group-item" href="#" onclick="displayTable(tablePath.studcourse)">STUDCOURSE</a>
+                <a class="list-group-item" href="#" onclick="displayTable(studcourse.path)">STUDCOURSE</a>
               </li>
               <li>
-                <a class="list-group-item" href="#" onclick="displayTable(tablePath.student)">STUDENT</a>
+                <a class="list-group-item" href="#" onclick="displayTable(student.path)">STUDENT</a>
               </li>
               <li>
-                <a class="list-group-item" href="#" onclick="displayTable(tablePath.studenthistory)">STUDENTHISTORY</a>
+                <a class="list-group-item" href="#" onclick="displayTable(studenthistory.path)">STUDENTHISTORY</a>
               </li>
             </ul>
 
@@ -120,7 +125,7 @@
 
         <p>Click on the table names on the right to view their contents.</p>
         <p>Execute your SQL query below on the console.</p>
-        <p>Import files from the upper right-hand corner.</p>
+        <p>Import CSV files by selecting the table from the list on the upper right-hand corner.</p>
       </div>
 
       <div class="footer">

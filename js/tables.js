@@ -1,7 +1,8 @@
 'use strict';
 
-const coursec =  {
-    path: 'tables/COURSEC.csv',
+const course =  {
+    name: 'COURSE',
+    path: 'tables/COURSE.csv',
     fields: [
       // {
       //   label: 'No',
@@ -37,6 +38,7 @@ const coursec =  {
     ]
   },
   courseoffering = {
+    name: 'COURSEOFFERING',
     path: 'tables/COURSEOFFERING.csv',
     fields: [
       // {
@@ -73,6 +75,7 @@ const coursec =  {
     ]
   },
   studcourse = {
+    name: 'STUDCOURSE',
     path: 'tables/STUDCOURSE.csv',
     fields: [
       // {
@@ -99,6 +102,7 @@ const coursec =  {
     ]
   },
   student = {
+    name: 'STUDENT',
     path: 'tables/STUDENT.csv',
     fields: [
       // {
@@ -135,6 +139,7 @@ const coursec =  {
     ]
   },
   studenthistory = {
+    name: 'STUDENTHISTORY',
     path: 'tables/STUDENTHISTORY.csv',
     fields: [
       // {
@@ -167,7 +172,7 @@ const coursec =  {
   };
 
 module.exports = {
-  coursec,
+  course,
   courseoffering,
   studcourse,
   student,

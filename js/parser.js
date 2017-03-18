@@ -186,13 +186,13 @@ function executeInsert(query){
       'StudentName' : 'Carmela',
       'Birthday' : '7-14-1996',
       'Degree' : 'BSCS',
-      'UnitsEarned' : '78'
+      'UnitsEarned' : '144'
     }
   };
 
-  // coursec
+  // course
   // query = {
-  //   tablename: 'coursec',
+  //   tablename: 'course',
   //   values: {
   //     'No': 'CMSC 142',
   //     'CTitle': 'Analysis of Algorithms',
