@@ -1,5 +1,7 @@
 'use strict';
 
+var tableToImport = '';
+
 // CSV upload : https://mounirmesselmeni.github.io/2012/11/20/reading-csv-file-with-javascript-and-html5-file-api/
 function handleFiles(files) {
   if (window.FileReader) {  // Check for the various File API support.
@@ -21,7 +23,12 @@ function getAsText(fileToRead) {
 function loadHandler(event) {
   var csv = event.target.result;
   csv = csv.trim();
-  setConsoleText(csv);
+
+  // parse csv string
+  var data = csvToArray(csv);
+  // console.log(data);
+
+  data = validate(data);
 }
 
 function errorHandler(ev) {
@@ -175,8 +182,123 @@ function trimQuotes(text){
 }
 
 function setTableToImport(table){
-  console.log(table);
+  // console.log(table);
   $("#csvFileInput").prop('disabled', false);
-
   $('#csvFileInput').trigger('click');
+  tableToImport = table;
+}
+
+function validate(data){
+  var fields = tableToImport.fields;
+  var required = tableToImport.required;
+
+  // set corresponding indices of columns
+  for(var i=0; i<fields.length; i++){
+    fields[i].index = i;
+  }
+
+  for(var i=0; i<required.length; i++){
+    for(var j=0; j<fields.length; j++){
+      if(required[i] === fields[j].name){
+        required[i] = fields[j];
+        break;
+      }
+    }
+  }
+
+  var query = {};
+
+  for(var row=0; row<data.length; row++){
+
+    // console.log(data[row]);
+    // console.log(fields);
+
+    if(data[row].length < fields.length){
+      alert('Expected number of values not met by given data');
+      return;
+    }
+    else{
+      // all columns have some value, even ''
+
+      // check if required indices have value
+      for(var req of required){
+        var index = req.index;
+        if(data[row][index] === undefined ||
+           data[row][index] === null){
+
+          alert('Missing value for required column: '+req);
+          return;
+        }
+      }
+
+      // at this point all required fields of the entry exists but not validated
+      query = {
+        tablename: tableToImport.name,
+        values: {}
+      };
+
+      // validate expected formats, data types while building query object
+      for(var field of fields){
+
+        var value = data[row][field.index];
+
+        // validate type
+        switch(field.type){
+          case 'int':
+            value = parseInt(value, 10);
+            if(isNaN(value)){
+              alert('Unexpected NaN value for: '+field.name);
+              return;
+            }
+          break;
+          case 'string':
+            if(typeof value !== 'string'){
+              alert('Unexpected '+(typeof value)+' type for: '+field.name);
+              return;
+            }
+          break;
+          case 'enum':
+            switch(field.enumType){
+              case 'sem':
+              if(field.possibleValues.indexOf(value) < 0){
+                alert('Unexpected enum value for: '+field.name);
+                return;
+              }
+              break;
+            }
+          break;
+        }
+
+        // validate format
+        if(field.format){
+          // specific format exists
+          if(!isValidFormat(field.format, value)){
+            alert('Invalid format for value: '+value+' at column: '+field.name);
+            return;
+          }
+          else{
+            // value follows expected format
+            if(typeof value === 'string'){
+              // trim value to MAX chars
+              value = value.substr(0,max.string);
+            }
+          }
+        }
+
+        // append to query object
+        query.values[field.name] = value;
+      }
+
+      // console.log(query);
+      // at this point query object is ready for insert
+      executeInsert(query);
+
+    }
+  }
+}
+
+function isValidFormat(format, value){
+  var regex = new RegExp(format, 'g');
+
+  return value.match(regex);
 }

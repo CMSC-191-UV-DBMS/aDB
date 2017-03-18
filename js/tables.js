@@ -5,8 +5,8 @@ const course =  {
     path: 'tables/COURSE.csv',
     fields: [
       // {
-      //   label: 'No',
-      //   value: 'No',
+      //   label: 'CNo',
+      //   value: 'CNo',
       //   default: 'NULL'
       // },
       // {
@@ -34,7 +34,7 @@ const course =  {
       //   value: 'SemOffered',
       //   default: 'NULL'
       // }
-      'No', 'CTitle', 'CDesc', 'NoOfUnits', 'HasLab', 'SemOffered'
+      'CNo', 'CTitle', 'CDesc', 'NoOfUnits', 'HasLab', 'SemOffered'
     ]
   },
   courseoffering = {

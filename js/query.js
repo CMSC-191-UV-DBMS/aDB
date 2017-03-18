@@ -12,7 +12,7 @@ function append(table, data){
       data: appendThis,
       fields: fields,
       hasCSVColumnTitle: false,
-      defaultValue: 'NULL'
+      defaultValue: ''
   };
 
   var filename = table.path;
@@ -29,7 +29,7 @@ function append(table, data){
           // if (err) throw err;
           if (err) reject(err);
 
-          console.log('The "'+JSON.stringify(appendThis)+'" was appended to '+table.name+'!');
+          console.log('The following data was appended to '+table.name+':\n'+JSON.stringify(appendThis));
 
           resolve(true);
         });

@@ -57,7 +57,7 @@ function parse(){
   }
 
   // test select, modify 'parsed' data in function for now
-  executeSelect({});
+  // executeSelect({});
 
   // test append, modify 'parsed' data in function for now
   // executeInsert({});
@@ -86,13 +86,13 @@ function executeSelect(query){
   // expected format & sample equivalent queries
 
   // SELECT * FROM student;
-  query = {
-    tablename: 'student',
-    select: [
-      'StudNo', 'StudentName', 'Birthday', 'Degree', 'Major', 'UnitsEarned'
-    ],
-    where: {}
-  };
+  // query = {
+  //   tablename: 'student',
+  //   select: [
+  //     'StudNo', 'StudentName', 'Birthday', 'Degree', 'Major', 'UnitsEarned'
+  //   ],
+  //   where: {}
+  // };
 
   // SELECT StudNo, StudentName, Birthday, Degree FROM student where UnitsEarned = 78;
   // query = {
@@ -179,16 +179,16 @@ function executeInsert(query){
   // expected format:
 
   // student
-  query = {
-    tablename: 'student',
-    values: {
-      'StudNo' : '2013-13579',
-      'StudentName' : 'Carmela',
-      'Birthday' : '7-14-1996',
-      'Degree' : 'BSCS',
-      'UnitsEarned' : '144'
-    }
-  };
+  // query = {
+  //   tablename: 'student',
+  //   values: {
+  //     'StudNo' : '2013-13579',
+  //     'StudentName' : 'Carmela',
+  //     'Birthday' : '7-14-1996',
+  //     'Degree' : 'BSCS',
+  //     'UnitsEarned' : '144'
+  //   }
+  // };
 
   // course
   // query = {

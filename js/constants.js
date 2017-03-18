@@ -12,123 +12,150 @@ const max = {
 
   fields = {
     No: {
-      // name: 'No',
+      name: 'No',
       type: 'string',
+      enumType: '',
       format: '',
     },
     CTitle: {
-      // name: 'CTitle',
+      name: 'CTitle',
       type: 'string',
+      enumType: '',
       format: '',
     },
     CDesc: {
-      // name: 'CDesc',
+      name: 'CDesc',
       type: 'string',
+      enumType: '',
       format: '',
     },
     NoOfUnits: {
-      // name: 'NoOfUnits',
+      name: 'NoOfUnits',
       type: 'int',
+      enumType: '',
       format: '',
     },
     HasLab: {
-      // name: 'HasLab',
+      name: 'HasLab',
       type: 'int',
+      enumType: '',
       format: '',
     },
     SemOffered: {
-      // name: 'SemOffered',
-      type: 'enum.sem',
+      name: 'SemOffered',
+      type: 'enum',
+      enumType: 'sem',
       format: '',
       possibleValues: semEnum,
     },
     Semester: {
-      // name: 'Semester',
-      type: 'enum.sem',
+      name: 'Semester',
+      type: 'enum',
+      enumType: 'sem',
       format: '',
       possibleValues: semEnum,
     },
     AcadYear: {
-      // name: 'AcadYear',
+      name: 'AcadYear',
       type: 'string',
+      enumType: '',
       format: '',
     },
     CNo: {
-      // name: 'CNo',
+      name: 'CNo',
       type: 'string',
+      enumType: '',
       format: '',
     },
     Section: {
-      // name: 'Section',
+      name: 'Section',
       type: 'string',
+      enumType: '',
       format: '',
     },
     Time: {
-      // name: 'Time',
+      name: 'Time',
       type: 'string',
+      enumType: '',
       format: '([01][0-9]|2[0-3]):([0-5][0-9])',
     },
     MaxStud: {
-      // name: 'MaxStud',
+      name: 'MaxStud',
       type: 'int',
+      enumType: '',
       format: '',
     },
     StudNo: {
-      // name: 'StudNo',
+      name: 'StudNo',
       type: 'string',
-      format: '(19[0-9]{2}|20[01][0-7])-[0-9]{5}',
+      enumType: '',
+      // format: '(19[0-9]{2}|20[01][0-7])-[0-9]{5}',
+      format: '([12][0-9]{3})-[0-9]{5}',
     },
     StudentName: {
-      // name: 'StudentName',
+      name: 'StudentName',
       type: 'string',
+      enumType: '',
       format: '',
     },
     Birthday: {
-      // name: 'Birthday',
+      name: 'Birthday',
       type: 'string',
-      format: '(1[0-9]{3}|20[01][0-7])-(0[1-9]|1[0-2])-([012][0-9]|3[0-1])',
+      enumType: '',
+      // format: '(1[0-9]{3}|20[01][0-7])-(0[1-9]|1[0-2])-([012][0-9]|3[0-1])',
+      format: '([12][0-9]{3})-(0[1-9]|1[0-2])-([012][0-9]|3[0-1])',
     },
     Degree: {
-      // name: 'Degree',
+      name: 'Degree',
       type: 'string',
+      enumType: '',
       format: '',
     },
     Major: {
-      // name: 'Major',
+      name: 'Major',
       type: 'string',
+      enumType: '',
       format: '',
     },
     UnitsEarned: {
-      // name: 'UnitsEarned',
+      name: 'UnitsEarned',
       type: 'int',
+      enumType: '',
       format: '',
     },
     Description: {
-      // name: 'Description',
+      name: 'Description',
       type: 'string',
+      enumType: '',
       format: '',
     },
     Action: {
-      // name: 'Action',
+      name: 'Action',
       type: 'string',
+      enumType: '',
       format: '',
     },
     DateFiled: {
-      // name: 'DateFiled',
+      name: 'DateFiled',
       type: 'string',
-      format: '',
+      enumType: '',
+      // format: '',
+      format: '([12][0-9]{3})-(0[1-9]|1[0-2])-([012][0-9]|3[0-1])',
     },
     DateResolved: {
-      // name: 'DateResolved',
+      name: 'DateResolved',
       type: 'string',
-      format: '',
+      enumType: '',
+      // format: '',
+      format: '([12][0-9]{3})-(0[1-9]|1[0-2])-([012][0-9]|3[0-1])',
     }
   },
 
   course = {
+    name: 'course',
     path: 'tables/COURSE.csv',
-    columns: [
-      fields['No'],
+    fields: [
+      fields['CNo'],
       fields['CTitle'],
       fields['CDesc'],
       fields['NoOfUnits'],
@@ -136,15 +163,14 @@ const max = {
       fields['SemOffered']
     ],
     required: [
-      {
-        CNo: fields['CNo']
-      },
+      fields['CNo'].name
     ]
   },
 
   courseoffering = {
+    name: 'courseoffering',
     path: 'tables/COURSEOFFERING.csv',
-    columns: [
+    fields: [
       fields['Semester'],
       fields['AcadYear'],
       fields['CNo'],
@@ -153,28 +179,29 @@ const max = {
       fields['MaxStud']
     ],
     required: [
-      {
-        Semester: fields['Semester'],
-        AcadYear: fields['AcadYear'],
-        CNo: fields['CNo'],
-        Section: fields['Section']
-      },
+      fields['Semester'].name,
+      fields['AcadYear'].name,
+      fields['CNo'].name,
+      fields['Section'].name
     ]
   },
 
   studcourse = {
+    name: 'studcourse',
     path: 'tables/STUDCOURSE.csv',
-    columns: [
+    fields: [
       fields['StudNo'],
       fields['CNo'],
       fields['Semester'],
       fields['AcadYear']
-    ]
+    ],
+    required: []
   },
 
   student = {
+    name: 'student',
     path: 'tables/STUDENT.csv',
-    columns: [
+    fields: [
       fields['StudNo'],
       fields['StudentName'],
       fields['Birthday'],
@@ -183,15 +210,14 @@ const max = {
       fields['UnitsEarned']
     ],
     required: [
-      {
-        StudNo: fields['StudNo']
-      },
+      fields['StudNo'].name
     ]
   },
 
   studenthistory = {
+    name: 'studenthistory',
     path: 'tables/STUDENTHISTORY.csv',
-    columns: [
+    fields: [
       fields['StudNo'],
       fields['Description'],
       fields['Action'],
@@ -199,8 +225,6 @@ const max = {
       fields['DateResolved']
     ],
     required: [
-      {
-        StudNo: fields['StudNo']
-      },
+      fields['StudNo'].name
     ]
   };
