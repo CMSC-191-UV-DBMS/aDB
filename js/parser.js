@@ -48,6 +48,73 @@ function parse(text){
 
       // interact with csv since auto-commit
       // results = executeSelect(parsed);
+
+      // sample query = select name, age, date from tablename;
+      // var index;
+      // var tokens = query.split(" "); // contains "select", "name,", "age,", "date", "from", and "tablename;"
+      // var tablename;
+      // var attribs = [];
+      // for(index=0;index<tokens.length - 1;index++){
+      //   if(tokens[index] == "select" || tokens[index] == "from"){
+      //     continue;
+      //   }
+      //   else{
+      //     var attr = tokens[index];
+      //     	if(attr.endsWith(",")){
+      //       	attr = attr.substr(0, attr.length-1);  // removal of commas at the end of attribs
+      //           // stringSample += "ATTR SUBSTR: "+ attr;
+      //           attrib.push(attr);
+      //       }
+      //       else{
+      //           // stringSample += "ATTR SUBSTR: "+ attr;
+      //           attrib.push(attr);
+      //       }
+      //   }
+      // }
+      // tablename = tokens[tokens.length-1];
+      // tablename = tablename.substr(0, tablename.length-1);
+      // result = "{\n\t{\n\t\tattrib:"+attrib+";\n\t\ttablename:"+tablename+";\n\t}\n}";
+
+
+    //var query = "select name from student;"; // this is the sample query
+    var tokens = query.split(" ");
+    var num = tokens.length;
+    var index;
+    var tablename;
+    var attrib = [];
+    var stringSample = "";  // for viewing elements of the JSONObject
+
+    for(index=0;index<tokens.length-1;index++){
+      if(tokens[index] == "select" || tokens[index] == "from"){
+        continue;
+      }
+      else{
+      	var attr = tokens[index];
+      	if(attr.endsWith(",")){  // removal of commas at the end of multiple attribs
+        	attr = attr.substr(0, attr.length-1);
+            attrib.push(attr);
+        }
+        else{
+            attrib.push(attr);
+        }
+      }
+    }
+    tablename = tokens[tokens.length-1];
+    tablename = tablename.substr(0, tablename.length-1);
+
+    //stringSample += attrib + "<br>" + tablename;
+    /*
+    result string
+    {
+        {
+            attrib: ;
+            tablename:
+        }
+    }
+    */
+
+    result = "{\n\t{\n\t\tattrib:"+attrib+";\n\t\ttablename:"+tablename+"\n\t}\n}";
+    alert(result);
     }
   }
   return result;
