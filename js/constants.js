@@ -228,3 +228,12 @@ const max = {
       fields['StudNo'].name
     ]
   };
+
+
+ var tables = {
+    course,
+    courseoffering,
+    student,
+    studenthistory,
+    studcourse
+  };
