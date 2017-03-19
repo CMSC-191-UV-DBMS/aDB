@@ -23,7 +23,8 @@ body {
 
 #main {
   position: relative;
-  height: 100%;
+  /*height: 100%;*/
+  height: 75%;
   overflow-y: auto;
   padding: 0 15px;
 }
@@ -83,42 +84,43 @@ body {
 }
 
 .footer {
-  background-color:#ffffff;
   bottom:0;
   position:fixed;
   padding:10px;
   height: 25%;
+  background-color: #f8f8f8;
+  border-top-color: #e7e7e7;
+  border-width: 1px;
+  border-top-style: solid;
+  z-index: 1000;
 }
 
 /* end bootply styles from http://www.bootply.com/87811 */
 
-textarea {
+textarea,
+input[type="button"] {
   width: 100%;
   height: 100%;
 }
 
-.container {
+form,
+.container,
+.footer .col-md-10,
+.footer .col-md-1  {
   padding: 0;
   height: 100%;
 }
 
-button {
-  height: 100%;
-  width: 100%;
+#tableView {
+  padding-top: 1.25em;
+  padding-left: 0.25em;
 }
 
-.footer .col-md-10{
+#sidebar ul {
+  height: 100%;
   padding: 0;
-  height: 100%;
 }
 
-.footer .col-md-1{
-  padding: 0;
-  height: 100%;
+#fileInput {
+  display: none;
 }
-
-.footer .col-md-1 input[type="button"] {
-  height: 100%;
-  width: 100%;
-}
-

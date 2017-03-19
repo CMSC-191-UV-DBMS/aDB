@@ -7,11 +7,14 @@
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
   <title>aDB</title>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- favicon -->
+  <link rel="shortcut icon" href="favicon.ico?v=2" type="image/x-icon">
+  <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
 
   <!-- Bootstrap -->
-  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap-theme.min.css" rel="stylesheet">
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -20,18 +23,21 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
+  <!-- DataTables -->
+  <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
+
   <!-- Begin custom css -->
   <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+  <!-- Begin custom js -->
+  <script type="text/javascript" src="js/constants.js"></script>
   </head>
 
   <body>
   <!-- begin bootply markup from http://www.bootply.com/87811 -->
   <div id="header" class="navbar navbar-default navbar-fixed-top">
     <div class="navbar-header">
-      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
-        <i class="icon-reorder"></i>
-      </button>
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="#" onclick="showHome()">
         aDB
       </a>
     </div>
@@ -40,9 +46,9 @@
         <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Members <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#">, Jeriel Jaro</a></li>
             <li><a href="#">Braga, Michael</a></li>
             <li><a href="#">Jaafar, Nurfitra</a></li>
+            <li><a href="#">Jaro, Jeriel</a></li>
             <li><a href="#">Javerina, Mark Neil</a></li>
             <li><a href="#">Mallari, Jeob </a></li>
             <li><a href="#">Ocfemia, Alyssa Mae</a></li>
@@ -53,10 +59,30 @@
             <li><a href="#">CMSC 191 UV 2nd sem 2016-2017</a></li>
           </ul>
         </li>
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Click on the table names on the right to view their contents.</a></li>
+            <li><a href="#">Execute your SQL query below on the console.</a></li>
+            <li><a href="#">Import CSV files by selecting the table from the list on the upper right-hand corner</a></li>
+          </ul>
+        </li>
       </ul>
       <ul class="nav navbar-nav pull-right">
-        <li>
-          <a href="#" id="nbAcctDD" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-import"></i>Import<i class="icon-sort-down"></i></a>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Select table to import CSV <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#" onclick="setTableToImport(course)">COURSE</a></li>
+            <li><a href="#" onclick="setTableToImport(courseoffering)">COURSEOFFERING</a></li>
+            <li><a href="#" onclick="setTableToImport(studcourse)">STUDCOURSE</a></li>
+            <li><a href="#" onclick="setTableToImport(student)">STUDENT</a></li>
+            <li><a href="#" onclick="setTableToImport(studenthistory)">STUDENTHISTORY</a></li>
+          </ul>
+        </li>
+        <li id="fileInput">
+          <a href="#" class="dropdown-toggle">
+            <input type="file" id="csvFileInput" disabled onchange="handleFiles(this.files)" accept=".csv">
+          </a>
         </li>
       </ul>
     </nav>
@@ -66,26 +92,24 @@
       <div id="sidebar">
         <ul class="nav list-group">
           <li>
-            <!-- <a href="#" class="list-group-item disabled"> -->
-              <strong class="list-group-item"><span class="list-group-item-heading"><i class="icon-home icon-1x"></i>Tables</span></strong>
-            <!-- </a> -->
+              <strong class="list-group-item"><span class="list-group-item-heading">Tables</span></strong>
           </li>
           <li class="list-group">
             <ul>
               <li>
-                <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>COURSEC</a>
+                <a class="list-group-item" href="#" onclick="displayTable(course.path)">COURSE</a>
               </li>
               <li>
-                <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>COURSEOFFERING</a>
+                <a class="list-group-item" href="#" onclick="displayTable(courseoffering.path)">COURSEOFFERING</a>
               </li>
               <li>
-                <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>STUDCOURSE</a>
+                <a class="list-group-item" href="#" onclick="displayTable(studcourse.path)">STUDCOURSE</a>
               </li>
               <li>
-                <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>STUDENT</a>
+                <a class="list-group-item" href="#" onclick="displayTable(student.path)">STUDENT</a>
               </li>
               <li>
-                <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>STUDENTHISTORY</a>
+                <a class="list-group-item" href="#" onclick="displayTable(studenthistory.path)">STUDENTHISTORY</a>
               </li>
             </ul>
 
@@ -96,20 +120,24 @@
     <div id="main-wrapper" class="col-md-10 pull-right">
       <div id="main">
         <div class="page-header">
-          <h3>Admin</h3>
+          <h3>aDB: A single-user prototype DBMS</h3>
         </div>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget magna et ante suscipit lacinia. Aenean porttitor velit id pretium blandit. Aenean ut sodales ante. Ut faucibus ornare venenatis. Duis sit amet arcu eros. Mauris volutpat vestibulum congue. Nam volutpat, urna eu varius dapibus, velit nisl bibendum lorem, sit amet dapibus sem dolor eu felis. Mauris in ullamcorper sapien. Morbi imperdiet consequat luctus. Donec vestibulum dapibus libero elementum posuere. Quisque posuere ipsum turpis, nec porttitor eros lobortis vel. Proin porttitor consequat adipiscing. Proin posuere orci odio, in pellentesque elit dapibus eu. Sed aliquam mollis hendrerit. Sed quis sapien nisl. Duis a bibendum tortor, nec malesuada justo. Sed luctus lorem nec velit consequat, vel ultricies lorem pulvinar. Mauris leo sapien, fermentum vel eleifend at, cursus quis massa. Ut sit amet venenatis orci, a dictum elit. Praesent a feugiat risus, non venenatis urna. Curabitur nisi sapien, facilisis vitae scelerisque nec, lacinia vel ante. Fusce tristique justo vitae mi lacinia, non interdum erat ultrices. Proin nec tempus odio, suscipit consequat lacus. Cras aliquet tempus libero, quis mattis ipsum. Nam justo odio, mollis at bibendum in, condimentum nec mi. Ut auctor consectetur erat, eget bibendum erat tristique ac. Nullam nisl sapien, pretium at enim nec, tincidunt molestie lacus. Mauris venenatis augue velit, eu malesuada velit faucibus id. Suspendisse ac suscipit magna. Integer elit risus, rutrum a mi vitae, pharetra tristique mi. Ut semper euismod lacus vel dignissim. Maecenas quis erat eget dui vehicula aliquam. Mauris in ullamcorper sapien. Morbi imperdiet consequat luctus. Donec vestibulum dapibus libero elementum posuere. Quisque posuere ipsum turpis, nec porttitor eros lobortis vel. Proin porttitor consequat adipiscing. Proin posuere orci odio, in pellentesque elit dapibus eu. Sed aliquam mollis hendrerit. Sed quis sapien nisl. Duis a bibendum tortor, nec malesuada justo. Sed luctus lorem nec velit consequat, vel ultricies lorem pulvinar. Mauris leo sapien, fermentum vel eleifend at, cursus quis massa. Ut sit amet venenatis orci, a dictum elit. Praesent a feugiat risus, non venenatis urna. Curabitur nisi sapien, facilisis vitae scelerisque nec, lacinia vel ante. Fusce tristique justo vitae mi lacinia, non interdum erat ultrices. Proin nec tempus odio, suscipit consequat lacus. Cras aliquet tempus libero, quis mattis ipsum. Nam justo odio, mollis at bibendum in, condimentum nec mi. Ut auctor consectetur erat, eget bibendum erat tristique ac. Nullam nisl sapien, pretium at enim nec, tincidunt molestie lacus. Mauris venenatis augue velit, eu malesuada velit faucibus id. Suspendisse ac suscipit magna. Integer elit risus, rutrum a mi vitae, pharetra tristique mi. Ut semper euismod lacus vel dignissim. Maecenas quis erat eget dui vehicula aliquam. Praesent sed dolor euismod, condimentum ante quis, molestie orci. Ut vel venenatis nunc, ut porta lacus. Donec ligula felis, tristique ut sollicitudin eget, commodo vel augue. Maecenas quis enim ac elit bibendum tristique. Suspendisse a vestibulum dui. Donec molestie enim vel ornare fermentum. Etiam suscipit, velit et dapibus dapibus, metus tellus convallis nulla, sit amet pharetra magna nunc id mauris. In eget nunc eleifend, aliquet urna sed, viverra ipsum. Quisque fringilla non eros vitae sollicitudin. Pellentesque non nisl est. Suspendisse potenti.</p>
+        <p>Click on the table names on the right to view their contents.</p>
+        <p>Execute your SQL query below on the console.</p>
+        <p>Import CSV files by selecting the table from the list on the upper right-hand corner.</p>
       </div>
 
       <div class="footer">
         <div class="container">
-          <div class="col-md-10">
-            <textarea id="console"></textarea>
-          </div>
-          <div class="col-md-1">
-            <input type="button" value="Execute" class="pull-right" id="execute"/>
-          </div>
+          <form id="sqlConsole">
+            <div class="col-md-10">
+              <textarea name="sqlQuery"></textarea>
+            </div>
+            <div class="col-md-1">
+              <input type="button" value="Execute" onclick="parse()" class="pull-right"/>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -118,13 +146,24 @@
 
   <!-- Bootstrap -->
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+
   <!-- Include all compiled plugins (below), or include individual files as needed -->
+<<<<<<< HEAD
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="js/constant.js"></script>
   <script src="js/parser.js"></script>
+=======
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- DataTable -->
+  <script type="text/javascript" src="js/datatables.min.js"></script>
+>>>>>>> c3622490de368d24818fc04dc3c0ef4c7f258486
 
   <!-- Begin custom js -->
+  <script type="text/javascript" src="js/console.js"></script>
+  <script type="text/javascript" src="js/csv.js"></script>
+  <script type="text/javascript" src="js/parser.js"></script>
   </body>
 
 </html>
