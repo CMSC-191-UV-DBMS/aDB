@@ -7,6 +7,8 @@
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
   <title>aDB</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
   <!-- Bootstrap -->
   <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -103,10 +105,10 @@
       <div class="footer">
         <div class="container">
           <div class="col-md-10">
-            <textarea></textarea>
+            <textarea id="console"></textarea>
           </div>
           <div class="col-md-1">
-            <input type="button" value="Execute" class="pull-right"/>
+            <input type="button" value="Execute" class="pull-right" id="execute"/>
           </div>
         </div>
       </div>
@@ -119,6 +121,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="js/parser.js"></script>
 
   <!-- Begin custom js -->
   </body>
