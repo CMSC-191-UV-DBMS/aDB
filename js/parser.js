@@ -69,11 +69,6 @@ function parseInsert(query){
 	var parsedQuery = {};
 	var error = false;
 	var i, j;
-	var old = query;
-<<<<<<< HEAD
-=======
-
->>>>>>> c3622490de368d24818fc04dc3c0ef4c7f258486
 
 	for (var m = 0; m < query.length; m++) {
 		if(query[m]!=" "){
@@ -102,12 +97,6 @@ function parseInsert(query){
 		}
 	}
 
-<<<<<<< HEAD
-	
-=======
-
-
->>>>>>> c3622490de368d24818fc04dc3c0ef4c7f258486
 	var intoWord = "";
 	for ( j = i  ; j < query.length; j++) {
 		if(query[j] != " ")
@@ -171,12 +160,6 @@ function parseInsert(query){
 		return {err: true};
 	}
 
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> c3622490de368d24818fc04dc3c0ef4c7f258486
 	var valueWord = "";
 	for ( i = j + 1 ; i < query.length; i++) {
 		if(query[i] != " " && query[i] !="("){
@@ -203,11 +186,7 @@ function parseInsert(query){
 		else
 			values = values + query[j];
 	}
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> c3622490de368d24818fc04dc3c0ef4c7f258486
+	
 	var parsedValues = [];
 	values = values.replace('"',"");
 	values = values.replace("'","");
