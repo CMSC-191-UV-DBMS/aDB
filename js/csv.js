@@ -244,10 +244,9 @@ function validate(data){
 
         // validate type
         switch(field.type){
-          case 'int':
-            value = parseInt(value, 10);
-            if(isNaN(value)){
-              alert('Unexpected NaN value for: '+field.name);
+          case 'number':
+            if(typeof value !== 'number'){
+              alert('Unexpected '+(typeof value)+' type for: '+field.name);
               return;
             }
           break;
@@ -278,9 +277,14 @@ function validate(data){
           }
           else{
             // value follows expected format
-            if(typeof value === 'string'){
-              // trim value to MAX chars
-              value = value.substr(0,max.string);
+            switch(field.type){
+              case 'number':
+                value = parseInt(value, 10);
+              break;
+              case 'string':
+                // trim value to MAX chars
+                value = value.substr(0,max.string);
+              break;
             }
           }
         }

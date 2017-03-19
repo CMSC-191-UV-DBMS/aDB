@@ -31,15 +31,15 @@ const max = {
     },
     NoOfUnits: {
       name: 'NoOfUnits',
-      type: 'int',
+      type: 'number',
       enumType: '',
-      format: '',
+      format: '\d+',
     },
     HasLab: {
       name: 'HasLab',
-      type: 'int',
+      type: 'number',
       enumType: '',
-      format: '',
+      format: '\d+',
     },
     SemOffered: {
       name: 'SemOffered',
@@ -81,9 +81,9 @@ const max = {
     },
     MaxStud: {
       name: 'MaxStud',
-      type: 'int',
+      type: 'number',
       enumType: '',
-      format: '',
+      format: '\d+',
     },
     StudNo: {
       name: 'StudNo',
@@ -119,9 +119,9 @@ const max = {
     },
     UnitsEarned: {
       name: 'UnitsEarned',
-      type: 'int',
+      type: 'number',
       enumType: '',
-      format: '',
+      format: '\d+',
     },
     Description: {
       name: 'Description',
