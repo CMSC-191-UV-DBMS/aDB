@@ -52,7 +52,7 @@ function append(table, data){
               // if (err) throw err;
               if (err) reject(err);
 
-              console.log('The "data to append" was appended to file!');
+              console.log('The following data was appended to '+table.name+':\n'+JSON.stringify(appendThis));
 
               resolve(true);
           });
