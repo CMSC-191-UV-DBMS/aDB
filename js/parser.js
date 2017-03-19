@@ -28,7 +28,7 @@ function parse(text){
     if(!hasErr && query.trim().toLowerCase().startsWith('insert')){
       // handle insert query OR call insert query handler
       parsed = parseInsert(query);
-
+      	console.log(parsed);
       // if(parsed.err){
       //   hasErr = true;
       //   result.msg = parsed.msg;
@@ -64,7 +64,6 @@ function parseInsert(query){
 	var error = false;
 	var i, j;
 	var old = query;
-	
 
 	for (var m = 0; m < query.length; m++) {
 		if(query[m]!=" "){
@@ -92,7 +91,6 @@ function parseInsert(query){
 			break;
 		}
 	}
-
 
 	
 	var intoWord = "";
@@ -126,8 +124,6 @@ function parseInsert(query){
 	}
 	
 
-
-	var completeParameter = false;
 	var parameter = "";
 	var parsedParameter = [];
 
@@ -139,9 +135,11 @@ function parseInsert(query){
 	}
 
 
-	if(query[i] == "v"){
-		completeParameter = true;
-
+	if(query[i] == "v"){	
+		for(var n = 0; n < tables[tablename.toLowerCase()].fields.length; n++){
+			parsedParameter.push(tables[tablename.toLowerCase()].fields[n].name);
+		}
+		j = i - 1;
 	}else if(query[i] == "("){
 		for ( j = i + 1; j < query.length; j++) {
 			if(query[j] != ")")
@@ -159,8 +157,6 @@ function parseInsert(query){
 	}
 
 
-	
-
 	var valueWord = "";
 	for ( i = j + 1 ; i < query.length; i++) {
 		if(query[i] != " " && query[i] !="("){
@@ -169,7 +165,7 @@ function parseInsert(query){
 		else if(query[i] == " " ){
 			continue;
 		}
-		else
+		else 
 			break;
 	}
 
@@ -187,9 +183,10 @@ function parseInsert(query){
 		else
 			values = values + query[j];
 	}
-	
+		
 	var parsedValues = [];
 	values = values.replace('"',"");
+	values = values.replace("'","");
 	parsedValues = values.split(",");
 
 	parsedQuery = {
@@ -208,7 +205,6 @@ function parseInsert(query){
 		
 	}
 
-	console.log(parsedQuery);
 	return parsedQuery;
 }
 
