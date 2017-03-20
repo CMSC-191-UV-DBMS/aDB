@@ -69,6 +69,9 @@ function csvToArray(csvStr){
 
     for(var rowCell=0; rowCell<rowCells.length; rowCell++){
       content = trimQuotes(rowCells[rowCell]);
+      if(!isNaN(content)){
+        content = parseInt(content);
+      }
       row.push(content);
     }
 

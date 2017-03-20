@@ -213,7 +213,6 @@ function executeSelect(query){
             var whereVal = whereCol ? query.where[whereCol] : null;
             var whereOp = whereCol ? query.operator : null;
 
-
             // filter by where
             var result = [];
             if(whereCol){
@@ -221,27 +220,62 @@ function executeSelect(query){
                 for(var i=0; i<data.length; i++){
                   switch(whereOp){
                     case '=':
-                      if(data[i][whereCol] === whereVal){
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(moment(data[i][whereCol]).isSame(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] === whereVal){
                         result.push(data[i]);
                       }
                     break;
                     case '>':
-                      if(data[i][whereCol] > whereVal){
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(moment(data[i][whereCol]).isAfter(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] > whereVal){
                         result.push(data[i]);
                       }
                     break;
                     case '<':
-                      if(data[i][whereCol] < whereVal){
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(!moment(data[i][whereCol]).isSameOrAfter(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] < whereVal){
                         result.push(data[i]);
                       }
                     break;
                     case '>=':
-                      if(data[i][whereCol] >= whereVal){
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(moment(data[i][whereCol]).isSameOrAfter(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] >= whereVal){
                         result.push(data[i]);
                       }
                     break;
                     case '<=':
-                      if(data[i][whereCol] <= whereVal){
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(!moment(data[i][whereCol]).isAfter(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] <= whereVal){
                         result.push(data[i]);
                       }
                     break;

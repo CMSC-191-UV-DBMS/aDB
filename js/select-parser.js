@@ -82,6 +82,7 @@ function parseSelect(query) {
   let tableSelected = [];
   let whereClause = {};
   let allColumns = false; // used if '*'
+  let operator = '';
 
   /*
   *  Loop for checking each token
@@ -268,7 +269,7 @@ function parseSelect(query) {
             return null;
         }
 
-        whereClause['operator'] = tokens[i].toLowerCase();
+        operator = tokens[i].toLowerCase();
 
         // check if no next tokens
         if(i+1 == tokens.length){
@@ -369,7 +370,8 @@ function parseSelect(query) {
   let result = {
     'tablename': tableSelected,
     'select': columnsSelected,
-    'where': whereClause
+    'where': whereClause,
+    'operator': operator
   };
 
   return result;
