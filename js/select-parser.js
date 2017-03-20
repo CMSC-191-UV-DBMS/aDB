@@ -44,13 +44,13 @@ function columnExist(column) {
 
 function error(token, type) {
   if(type == 'column_does_not_exist')
-    console.error('Uknown column \''+token+'\'.');
+    alert('Uknown column \''+token+'\'.');
   else if(type == 'table_does_not_exist')
-    console.error('Uknown table \''+token+'\'.');
+    alert('Uknown table \''+token+'\'.');
   else if(type == 'no_column_found_in_table')
-    console.error('Column \''+token[0]+'\' does not exist on table \''+token[1]+'\'');
+    alert('Column \''+token[0]+'\' does not exist on table \''+token[1]+'\'');
   else
-    console.error('ERROR: You have an error in your SQL syntax. Error starts at \''+token+'\'.');
+    alert('ERROR: You have an error in your SQL syntax. Error starts at \''+token+'\'.');
 }
 
 function parseSelect(query) {
