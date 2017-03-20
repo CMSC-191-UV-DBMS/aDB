@@ -6,6 +6,10 @@ function parse(){
   console.log('got: ');
   console.log(text);
 
+  if(!text.length){
+    return;
+  }
+
   var multiline = true;
   var lines = text.split('\n');
   var query = lines[0];
@@ -13,16 +17,25 @@ function parse(){
   var hasErr = false;
   var result = '';
   var results = { hasErr: hasErr, msg: ''  };
+  var msg = '<p class="alert alert-success">All queries done succesfully.</p>';
+
 
   for(var i=0; i<!hasErr && lines.length; i++){
+
+  for(var i=0; i<lines.length && !hasErr; i++){
     while(!hasErr && multiline){ // assume query might be multiline
       if(!lines[i].trim().toLowerCase().startsWith('insert') &&
          !lines[i].trim().toLowerCase().startsWith('select')){
-        query += lines[i];
+        query += lines[i++];
       }
       else{
         break; // start handling the built query
       }
+    }
+
+    if(i>=lines.length){
+      msg = '<p class="alert alert-danger">Oops something went wrong.</p>';
+      break;
     }
 
     if(!hasErr && query.trim().toLowerCase().startsWith('insert')){
@@ -49,6 +62,84 @@ function parse(){
 
       // interact with csv since auto-commit
       // results = executeSelect(parsed);
+
+      // sample query = select name, age, date from tablename;
+      // var index;
+      // var tokens = query.split(" "); // contains "select", "name,", "age,", "date", "from", and "tablename;"
+      // var tablename;
+      // var attribs = [];
+      // for(index=0;index<tokens.length - 1;index++){
+      //   if(tokens[index] == "select" || tokens[index] == "from"){
+      //     continue;
+      //   }
+      //   else{
+      //     var attr = tokens[index];
+      //     	if(attr.endsWith(",")){
+      //       	attr = attr.substr(0, attr.length-1);  // removal of commas at the end of attribs
+      //           // stringSample += "ATTR SUBSTR: "+ attr;
+      //           attrib.push(attr);
+      //       }
+      //       else{
+      //           // stringSample += "ATTR SUBSTR: "+ attr;
+      //           attrib.push(attr);
+      //       }
+      //   }
+      // }
+      // tablename = tokens[tokens.length-1];
+      // tablename = tablename.substr(0, tablename.length-1);
+      // result = "{\n\t{\n\t\tattrib:"+attrib+";\n\t\ttablename:"+tablename+";\n\t}\n}";
+
+
+    //var query = "select name from student;"; // this is the sample query
+    // var tokens = query.split(" ");
+    // var num = tokens.length;
+    // var index;
+    // var tablename;
+    // var attrib = [];
+    // var stringSample = "";  // for viewing elements of the JSONObject
+
+    // for(index=0;index<tokens.length-1;index++){
+    //   if(tokens[index] == "select" || tokens[index] == "from"){
+    //     continue;
+    //   }
+    //   else{
+    //   	var attr = tokens[index];
+    //   	if(attr.endsWith(",")){  // removal of commas at the end of multiple attribs
+    //     	attr = attr.substr(0, attr.length-1);
+    //         attrib.push(attr);
+    //     }
+    //     else{
+    //         attrib.push(attr);
+    //     }
+    //   }
+    // }
+    // tablename = tokens[tokens.length-1];
+    // tablename = tablename.substr(0, tablename.length-1);
+
+    // //stringSample += attrib + "<br>" + tablename;
+    // /*
+    // result string
+    // {
+    //     {
+    //         attrib: ;
+    //         tablename:
+    //     }
+    // }
+    // */
+
+    // result = "{\n\t{\n\t\tattrib:"+attrib+";\n\t\ttablename:"+tablename+"\n\t}\n}";
+    // alert(result);
+      parsed = parseSelect(query);
+      // console.log(parsed);
+
+      if(!parsed){
+        return;
+      }
+      else{
+        console.log(parsed);
+        executeSelect(parsed);
+      }
+
     }
   }
 
@@ -57,8 +148,10 @@ function parse(){
 
   // test append, modify 'parsed' data in function for now
   // executeInsert({});
-
-  return result;
+  var div = document.createElement('div');
+  div.setAttribute('id', 'tableView');
+  div.innerHTML = msg;
+  $('#main').html(div);
 }
 
 function parseInsert(query){
@@ -287,9 +380,14 @@ function executeSelect(query){
   //     'UnitsEarned': "74"
   //   }
   // };
+  var file = tables[query.tablename].path;
+  console.log(file);
+
+  // var file = eval(query.tablename.path);
+ // console.log(file);             // ---- undefined when select * from student;
 
   // get from file
-  readCSV(tablePath[query.tablename])
+  readCSV(file)
     .then(
           (data) => {
             // console.log(data);
@@ -297,18 +395,87 @@ function executeSelect(query){
             var headers = data[0];
             data = arrayToJson(data);
 
-            // console.log(data);
+            console.log(data);
 
             // filter data
             var whereCol = Object.keys(query.where)[0];
             var whereVal = whereCol ? query.where[whereCol] : null;
+            var whereOp = whereCol ? query.operator : null;
 
             // filter by where
             var result = [];
             if(whereCol){
               for(var i=0; i<data.length; i++){
-                if(data[i][whereCol] === whereVal){
-                  result.push(data[i]);
+                for(var i=0; i<data.length; i++){
+                  console.log(data[i][whereCol] + '==' + whereVal);
+                  switch(whereOp){
+                    case '=':
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(moment(data[i][whereCol]).isSame(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] === whereVal){
+                        result.push(data[i]);
+                      }
+                    break;
+                    case '>':
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(moment(data[i][whereCol]).isAfter(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] > whereVal){
+                        result.push(data[i]);
+                      }
+                    break;
+                    case '<':
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(!moment(data[i][whereCol]).isSameOrAfter(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] < whereVal){
+                        result.push(data[i]);
+                      }
+                    break;
+                    case '>=':
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(moment(data[i][whereCol]).isSameOrAfter(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] >= whereVal){
+                        result.push(data[i]);
+                      }
+                    break;
+                    case '<=':
+                      if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
+                         moment(whereVal, "HH:mm", true).isValid()){
+
+                        if(!moment(data[i][whereCol]).isAfter(whereVal)){
+                          result.push(data[i]);
+                        }
+                      }
+                      else if(data[i][whereCol] <= whereVal){
+                        result.push(data[i]);
+                      }
+                    break;
+                    case 'LIKE':
+                    console.log('do something');
+                    break;
+                  }
+                // if(data[i][whereCol] === whereVal){
+                //   result.push(data[i]);
+                // }
                 }
               }
               // console.log(result);
