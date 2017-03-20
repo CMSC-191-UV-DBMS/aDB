@@ -81,7 +81,6 @@ function parseSelect(query) {
   let columnsSelected = [];
   let tableSelected = [];
   let whereClause = {};
-  let operator = '';
   let allColumns = false; // used if '*'
 
   /*
@@ -269,7 +268,7 @@ function parseSelect(query) {
             return null;
         }
 
-        operator = tokens[i].toLowerCase();
+        whereClause['operator'] = tokens[i].toLowerCase();
 
         // check if no next tokens
         if(i+1 == tokens.length){
@@ -323,8 +322,8 @@ function parseSelect(query) {
         }
 
         // check if number or date or student number
-        else if(/^(\d+|([01][0-9]|2[0-3]):([0-5][0-9])|([12][0-9]{3})-[0-9]{5}|([12][0-9]{3})-(0[1-9]|1[0-2])-([012][0-9]|3[0-1]))$/.test(tokens[i])){
-          whereClause[tempColumn] = tokens[i];
+        else if(/^(\d+)$/.test(tokens[i])){
+          whereClause[tempColumn] = parseInt(tokens[i]);
           if(queryDone){
             break;
           }
@@ -368,7 +367,6 @@ function parseSelect(query) {
   }
 
   let result = {
-    'operator': operator,
     'tablename': tableSelected,
     'select': columnsSelected,
     'where': whereClause

@@ -211,6 +211,8 @@ function executeSelect(query){
             // filter data
             var whereCol = Object.keys(query.where)[0];
             var whereVal = whereCol ? query.where[whereCol] : null;
+            var whereOp = whereCol ? query.operator : null;
+
 
             // filter by where
             var result = [];
