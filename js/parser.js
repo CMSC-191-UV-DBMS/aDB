@@ -232,7 +232,7 @@ function parseInsert(query){
 
 	//Populate parsedQuery
 	for (var i = parsedParameter.length -1; i >= 0; i--) {
-		parsedQuery.values[(parsedParameter[i])] = parsedValues[i];
+		parsedQuery.values[(parsedParameter[i])] = parsedValues[i];   
 
 	}
 
