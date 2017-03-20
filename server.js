@@ -36,8 +36,8 @@ app.route('/tables/:tablename')
 
       query.append(table, data)
             .then(
-                  (success) => {
-                    res.redirect('/');
+                  () => {
+                    res.json({success : "Inserted Successfully", status : 200});
                   },
                   (error) => {
                     console.log(error);

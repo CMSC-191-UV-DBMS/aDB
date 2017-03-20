@@ -27,11 +27,13 @@ function append(table, data){
 
         fs.appendFile(filename, csv, function (err) {
           // if (err) throw err;
-          if (err) reject(err);
+          if (err) {
+            reject(err);
+          }
 
           console.log('The following data was appended to '+table.name+':\n'+JSON.stringify(appendThis));
 
-          resolve(true);
+          resolve();
         });
       }
       else {
@@ -39,7 +41,9 @@ function append(table, data){
         console.log('New file, just writing headers');
         fs.writeFile(filename, '', function (err, stat) {
           // if (err) throw err;
-          if (err) reject(err);
+          if (err) {
+            reject(err);
+          }
 
           console.log('file saved');
 
@@ -50,17 +54,18 @@ function append(table, data){
 
           fs.appendFile(filename, csv, function (err) {
               // if (err) throw err;
-              if (err) reject(err);
+              if (err) {
+                reject(err);
+              }
 
               console.log('The following data was appended to '+table.name+':\n'+JSON.stringify(appendThis));
 
-              resolve(true);
+              resolve();
           });
         });
       }
     });
-  })
-
+  });
 }
 
 module.exports = {

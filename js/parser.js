@@ -19,6 +19,8 @@ function parse(){
   var results = { hasErr: hasErr, msg: ''  };
   var msg = '<p class="alert alert-success">All queries done succesfully.</p>';
 
+  var div = document.createElement('div');
+  div.setAttribute('id', 'tableView');
 
   for(var i=0; i<lines.length && !hasErr; i++){
     while(!hasErr && multiline && i<lines.length){ // assume query might be multiline
@@ -37,15 +39,18 @@ function parse(){
     }
 
     if(!hasErr && query.trim().toLowerCase().startsWith('insert')){
-       // handle insert query OR call insert query handler
-       parsed = parseInsert(query);
-       if(!parsed){
-              return;
-       }
-       else{
-              result = executeInsert(parsed);
-       }
-     }
+      // handle insert query OR call insert query handler
+      parsed = parseInsert(query);
+      if(!parsed){
+        return;
+      }
+      else{
+        result = executeInsert(parsed);
+        if(result){
+          $('#main').append(div);
+        }
+      }
+    }
 
     if(!hasErr && query.trim().toLowerCase().startsWith('select')){
       // handle select query OR call select query handler
@@ -146,8 +151,7 @@ function parse(){
 
   // test append, modify 'parsed' data in function for now
   // executeInsert({});
-  var div = document.createElement('div');
-  div.setAttribute('id', 'tableView');
+
   div.innerHTML = msg;
   $('#main').html(div);
 }
@@ -283,7 +287,7 @@ function parseInsert(query){
 		else
 			values = values + query[j];
 	}
-	
+
 	//This also gets the values that is empty string
 	var parsedValues = [];
 	var values2 = values.split(",");
@@ -307,7 +311,7 @@ function parseInsert(query){
 			parsedValues.push(values2[n].replace(/\s/g,""));
 		}
 	}
-	
+
 	//Creating the parsed query into an object
 	parsedQuery = {
 		"tablename" : tablename,
@@ -584,6 +588,17 @@ function executeInsert(query){
     dataType: 'json',
     data: JSON.stringify(query.values),
     contentType: 'application/json'
-    // success: readCSV(tablePath[query.tablename])
-  });
+  })
+  .then(
+        (result) => {
+          console.log(result);
+          if(result.status == 200){
+             return true;
+          }
+          return false;
+        },
+        (error) => {
+          console.log(result);
+          return false;
+        });
 }
