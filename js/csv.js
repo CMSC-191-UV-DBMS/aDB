@@ -148,29 +148,34 @@ function displayTable(filePath){
               var msg = '<p class="well">Table is empty.</p>';
               div.innerHTML = msg;
             }
+            else{
+              // remove headers
+              data.splice(0, 1);
 
-            $('#main').html(div);
-            $('#main table').DataTable({
-              data: data,
-              paging: true,
-              ordering: true,
-              searching: true,
-              lengthChange: true,
-              lengthMenu: [
-                [10, 25, 50, 100, 1000, 10000, -1],    // data per page
-                [10, 25, 50, 100, 1000, 10000, "All"]  // label
-              ],
-              orderMulti: true,
-              scrollY: "300px", // needed for fixed header
-              fixedHeader: {
-                header: true,
-                footer: false
-              },
-              search: {
-                caseInsensitive: true,
-                regex: true
-              },
-            });
+              $('#main').html(div);
+              $('#main table').DataTable({
+                data: data,
+                paging: true,
+                ordering: true,
+                searching: true,
+                lengthChange: true,
+                lengthMenu: [
+                  [10, 25, 50, 100, 1000, 10000, -1],    // data per page
+                  [10, 25, 50, 100, 1000, 10000, "All"]  // label
+                ],
+                orderMulti: true,
+                scrollY: "300px", // needed for fixed header
+                fixedHeader: {
+                  header: true,
+                  footer: false
+                },
+                search: {
+                  caseInsensitive: true,
+                  regex: true
+                },
+                scrollCollapse: true,
+              });
+            }
           },
           (error) => {
             // console.log(error);
