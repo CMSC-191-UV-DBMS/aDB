@@ -14,7 +14,7 @@ function parse(){
   var result = '';
   var results = { hasErr: hasErr, msg: ''  };
 
-  for(var i=1; i<!hasErr && lines.length; i++){
+  for(var i=0; i<!hasErr && lines.length; i++){
     while(!hasErr && multiline){ // assume query might be multiline
       if(!lines[i].trim().toLowerCase().startsWith('insert') &&
          !lines[i].trim().toLowerCase().startsWith('select')){
@@ -82,44 +82,54 @@ function parse(){
 
 
     //var query = "select name from student;"; // this is the sample query
-    var tokens = query.split(" ");
-    var num = tokens.length;
-    var index;
-    var tablename;
-    var attrib = [];
-    var stringSample = "";  // for viewing elements of the JSONObject
+    // var tokens = query.split(" ");
+    // var num = tokens.length;
+    // var index;
+    // var tablename;
+    // var attrib = [];
+    // var stringSample = "";  // for viewing elements of the JSONObject
 
-    for(index=0;index<tokens.length-1;index++){
-      if(tokens[index] == "select" || tokens[index] == "from"){
-        continue;
+    // for(index=0;index<tokens.length-1;index++){
+    //   if(tokens[index] == "select" || tokens[index] == "from"){
+    //     continue;
+    //   }
+    //   else{
+    //   	var attr = tokens[index];
+    //   	if(attr.endsWith(",")){  // removal of commas at the end of multiple attribs
+    //     	attr = attr.substr(0, attr.length-1);
+    //         attrib.push(attr);
+    //     }
+    //     else{
+    //         attrib.push(attr);
+    //     }
+    //   }
+    // }
+    // tablename = tokens[tokens.length-1];
+    // tablename = tablename.substr(0, tablename.length-1);
+
+    // //stringSample += attrib + "<br>" + tablename;
+    // /*
+    // result string
+    // {
+    //     {
+    //         attrib: ;
+    //         tablename:
+    //     }
+    // }
+    // */
+
+    // result = "{\n\t{\n\t\tattrib:"+attrib+";\n\t\ttablename:"+tablename+"\n\t}\n}";
+    // alert(result);
+      parsed = parseSelect(query);
+      // console.log(parsed);
+
+      if(!parsed){
+        return;
       }
       else{
-      	var attr = tokens[index];
-      	if(attr.endsWith(",")){  // removal of commas at the end of multiple attribs
-        	attr = attr.substr(0, attr.length-1);
-            attrib.push(attr);
-        }
-        else{
-            attrib.push(attr);
-        }
+        executeSelect(parsed);
       }
-    }
-    tablename = tokens[tokens.length-1];
-    tablename = tablename.substr(0, tablename.length-1);
 
-    //stringSample += attrib + "<br>" + tablename;
-    /*
-    result string
-    {
-        {
-            attrib: ;
-            tablename:
-        }
-    }
-    */
-
-    result = "{\n\t{\n\t\tattrib:"+attrib+";\n\t\ttablename:"+tablename+"\n\t}\n}";
-    alert(result);
     }
   }
 
@@ -180,9 +190,11 @@ function executeSelect(query){
   //     'UnitsEarned': "74"
   //   }
   // };
+  var file = tables[query.tablename].path;
+  console.log(file);
 
   // get from file
-  readCSV(tablePath[query.tablename])
+  readCSV(file)
     .then(
           (data) => {
             // console.log(data);

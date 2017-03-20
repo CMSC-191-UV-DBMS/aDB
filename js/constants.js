@@ -227,4 +227,12 @@ const max = {
     required: [
       fields['StudNo'].name
     ]
+  },
+
+  tables = {
+    studenthistory: studenthistory,
+    student: student,
+    studcourse: studcourse,
+    courseoffering: courseoffering,
+    course: course
   };
