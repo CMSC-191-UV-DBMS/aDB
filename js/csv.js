@@ -28,6 +28,21 @@ function loadHandler(event) {
   var data = csvToArray(csv);
   // console.log(data);
 
+  // build field string
+  var fields = [];
+  for(var field of tableToImport.fields){
+    fields.push(field.name);
+  }
+
+  // get first line of imported data
+  var dataHeader = data[0].join(',');
+  var tableHeader = fields.join(',');
+
+  if(dataHeader === tableHeader){
+    data.splice(0, 1);
+  }
+
+  // console.log(data);
   data = validate(data);
 }
 
@@ -224,7 +239,8 @@ function validate(data){
       for(var req of required){
         var index = req.index;
         if(data[row][index] === undefined ||
-           data[row][index] === null){
+           data[row][index] === null ||
+           data[row][index].length === 0){
 
           alert('Missing value for required column: '+req);
           return;
