@@ -245,6 +245,7 @@ function validate(data){
         // validate type
         switch(field.type){
           case 'number':
+            value = parseFloat(value);
             if(typeof value !== 'number'){
               alert('Unexpected '+(typeof value)+' type for: '+field.name);
               return;
@@ -302,7 +303,9 @@ function validate(data){
 }
 
 function isValidFormat(format, value){
-  var regex = new RegExp(format, 'g');
+  value = value.toString();
+  format = '^'+format+'$';
 
+  var regex = new RegExp(format, 'g');
   return value.match(regex);
 }

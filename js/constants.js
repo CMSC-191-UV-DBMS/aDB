@@ -33,13 +33,13 @@ const max = {
       name: 'NoOfUnits',
       type: 'number',
       enumType: '',
-      format: '\d+',
+      format: '\\d+',
     },
     HasLab: {
       name: 'HasLab',
       type: 'number',
       enumType: '',
-      format: '\d+',
+      format: '\\d+',
     },
     SemOffered: {
       name: 'SemOffered',
@@ -83,7 +83,7 @@ const max = {
       name: 'MaxStud',
       type: 'number',
       enumType: '',
-      format: '\d+',
+      format: '\\d+',
     },
     StudNo: {
       name: 'StudNo',
@@ -121,7 +121,7 @@ const max = {
       name: 'UnitsEarned',
       type: 'number',
       enumType: '',
-      format: '\d+',
+      format: '\\d+',
     },
     Description: {
       name: 'Description',
