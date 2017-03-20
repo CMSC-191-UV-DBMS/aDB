@@ -28,6 +28,21 @@ function loadHandler(event) {
   var data = csvToArray(csv);
   // console.log(data);
 
+  // build field string
+  var fields = [];
+  for(var field of tableToImport.fields){
+    fields.push(field.name);
+  }
+
+  // get first line of imported data
+  var dataHeader = data[0].join(',');
+  var tableHeader = fields.join(',');
+
+  if(dataHeader === tableHeader){
+    data.splice(0, 1);
+  }
+
+  // console.log(data);
   data = validate(data);
 }
 
@@ -133,29 +148,34 @@ function displayTable(filePath){
               var msg = '<p class="well">Table is empty.</p>';
               div.innerHTML = msg;
             }
+            else{
+              // remove headers
+              data.splice(0, 1);
 
-            $('#main').html(div);
-            $('#main table').DataTable({
-              data: data,
-              paging: true,
-              ordering: true,
-              searching: true,
-              lengthChange: true,
-              lengthMenu: [
-                [10, 25, 50, 100, 1000, 10000, -1],    // data per page
-                [10, 25, 50, 100, 1000, 10000, "All"]  // label
-              ],
-              orderMulti: true,
-              scrollY: "300px", // needed for fixed header
-              fixedHeader: {
-                header: true,
-                footer: false
-              },
-              search: {
-                caseInsensitive: true,
-                regex: true
-              },
-            });
+              $('#main').html(div);
+              $('#main table').DataTable({
+                data: data,
+                paging: true,
+                ordering: true,
+                searching: true,
+                lengthChange: true,
+                lengthMenu: [
+                  [10, 25, 50, 100, 1000, 10000, -1],    // data per page
+                  [10, 25, 50, 100, 1000, 10000, "All"]  // label
+                ],
+                orderMulti: true,
+                scrollY: "300px", // needed for fixed header
+                fixedHeader: {
+                  header: true,
+                  footer: false
+                },
+                search: {
+                  caseInsensitive: true,
+                  regex: true
+                },
+                scrollCollapse: true,
+              });
+            }
           },
           (error) => {
             // console.log(error);
@@ -224,7 +244,8 @@ function validate(data){
       for(var req of required){
         var index = req.index;
         if(data[row][index] === undefined ||
-           data[row][index] === null){
+           data[row][index] === null ||
+           data[row][index].length === 0){
 
           alert('Missing value for required column: '+req);
           return;

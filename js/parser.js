@@ -193,6 +193,9 @@ function executeSelect(query){
   var file = tables[query.tablename].path;
   console.log(file);
 
+  var file = eval(query.tablename.path);
+  console.log(file);
+
   // get from file
   readCSV(file)
     .then(
