@@ -67,7 +67,7 @@ function parseSelect(query) {
   /*
   *  Clean query
   */
-  query = query.trim().toLowerCase();
+  query = query.trim();
   let tokens = query.split(/\s+/);
 
   /*
@@ -90,7 +90,7 @@ function parseSelect(query) {
   for (let i = 0; i < tokens.length; i++) {
 
     /******************** Start of query ********************/
-    if(i==0 && tokens[i] == 'select'){
+    if(i==0 && tokens[i].toLowerCase() == 'select'){
 
       // check if no next tokens
       if(i+1 == tokens.length){
@@ -173,7 +173,7 @@ function parseSelect(query) {
       }
     }
     /********************** From Token ***********************/
-    else if(columnsDone && !fromDone && tokens[i] == 'from'){
+    else if(columnsDone && !fromDone && tokens[i].toLowerCase() == 'from'){
       // check if no next tokens
       if(i+1 == tokens.length){
         error(tokens[i], null);
@@ -226,7 +226,7 @@ function parseSelect(query) {
       break;
     }
     /********************** Where Token **********************/
-    else if(tableDone && !queryDone && !whereDone && tokens[i] == 'where'){
+    else if(tableDone && !queryDone && !whereDone && tokens[i].toLowerCase() == 'where'){
       // check if no next tokens
       if(i+1 == tokens.length){
         error(tokens[i], null);

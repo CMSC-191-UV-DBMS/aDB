@@ -6,6 +6,10 @@ function parse(){
   console.log('got: ');
   console.log(text);
 
+  if(!text.length){
+    return;
+  }
+
   var multiline = true;
   var lines = text.split('\n');
   var query = lines[0];
@@ -13,16 +17,23 @@ function parse(){
   var hasErr = false;
   var result = '';
   var results = { hasErr: hasErr, msg: ''  };
+  var msg = '<p class="alert alert-danger">Oops something went wrong.</p>';
+
 
   for(var i=0; i<!hasErr && lines.length; i++){
+
     while(!hasErr && multiline){ // assume query might be multiline
       if(!lines[i].trim().toLowerCase().startsWith('insert') &&
          !lines[i].trim().toLowerCase().startsWith('select')){
-        query += lines[i];
+        query += lines[i++];
       }
       else{
         break; // start handling the built query
       }
+    }
+
+    if(i>=lines.length){
+      var msg = '<p class="alert alert-danger">Oops something went wrong.</p>';
     }
 
     if(!hasErr && query.trim().toLowerCase().startsWith('insert')){
@@ -139,8 +150,11 @@ function parse(){
 
   // test append, modify 'parsed' data in function for now
   // executeInsert({});
-
-  return result;
+  var div = document.createElement('div');
+  div.setAttribute('id', 'tableView');
+  var msg = '<p class="alert alert-success">All queries done succesfully.</p>';
+  div.innerHTML = msg;
+  $('#main').html(div);
 }
 
 function arrayToJson(data){
@@ -218,6 +232,7 @@ function executeSelect(query){
             if(whereCol){
               for(var i=0; i<data.length; i++){
                 for(var i=0; i<data.length; i++){
+                  console.log(data[i][whereCol] + '==' + whereVal);
                   switch(whereOp){
                     case '=':
                       if(moment(whereVal, "YYYY-MM-DD", true).isValid() ||
