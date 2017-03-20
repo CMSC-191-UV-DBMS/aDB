@@ -152,7 +152,7 @@ function parseInsert(query){
 				break;
 		}
 
-		parameter = parameter.replace(" ","");
+		parameter = parameter.replace(/\s/g,"");
 		parsedParameter = parameter.split(",");
 
 	}else{
@@ -188,12 +188,38 @@ function parseInsert(query){
 	}
 	
 	var parsedValues = [];
-	values = values.replace('"',"");
-	values = values.replace("'","");
-	parsedValues = values.split(",");
+	// values = values.replace('"',"");
+	// values = values.replace("'","");
+	var values2 = values.split(",");
+	console.log(values2.length);
+	for (var n = values2.length -1; n >= 0; n--) {
+		console.log(values2[n]);
+		if (values2[n].indexOf("'") > -1 ){
+			if(values2[n].lastIndexOf("'") - values2[n].indexOf("'") != 1){
+				parsedValues.push(values2[n].slice(values2[n].indexOf("'")+1, values2[n].lastIndexOf("'") ));
+			}else{
+				parsedValues.push("");
+			}
+		}else if (values2[n].indexOf('"') > -1){
+			if(values2[n].lastIndexOf('"') - values2[n].indexOf('"') != 1){
+			console.log("11111");
+				parsedValues.push(values2[n].slice(values2[n].indexOf('"')+1, values2[n].lastIndexOf('"')));
+			}else{
+				parsedValues.push("");
+			console.log("22222");
+			}
+		}else if(values2[n] == "" || /^\s+$/.test(values[n]) ){
 
+			return {err: true , msg: "ERROR: Syntax error. No value between ',,'."}
+		}else{
+			console.log("3333");
+			parsedValues.push(values2[n]);
+		}
+	}
+console.log(parsedParameter);
+console.log(parsedValues);
 	parsedQuery = {
-		"table" : tablename,
+		"tablename" : tablename,
 		"params" : parsedParameter,
 		"values" : {}
 	}
