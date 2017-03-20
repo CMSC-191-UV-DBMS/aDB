@@ -11,12 +11,6 @@ const max = {
   ],
 
   fields = {
-    No: {
-      name: 'No',
-      type: 'string',
-      enumType: '',
-      format: '',
-    },
     CTitle: {
       name: 'CTitle',
       type: 'string',
@@ -90,7 +84,8 @@ const max = {
       type: 'string',
       enumType: '',
       // format: '(19[0-9]{2}|20[01][0-7])-[0-9]{5}',
-      format: '([12][0-9]{3})-[0-9]{5}',
+      // format: '([12][0-9]{3})-[0-9]{5}',
+      format: '([1-9][0-9]{3})-[0-9]{5}',
     },
     StudentName: {
       name: 'StudentName',

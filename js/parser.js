@@ -45,9 +45,25 @@ function parse(){
         return;
       }
       else{
-        result = executeInsert(parsed);
+        // result = executeInsert(parsed);
+
+        // console.log(tables);
+        // console.log(query);
+
+        tableToImport = tables[parsed['tablename'].toLowerCase()];
+        // console.log(tableToImport);
+
+        // build array
+        var dataArr = jsonToArr(parsed);
+        console.log(dataArr);
+
+        result = validate([dataArr]);
         if(result){
           $('#main').append(div);
+        }
+        else{
+          msg = '<p class="alert alert-danger">Oops something went wrong.</p>';
+          break;
         }
       }
     }
@@ -601,4 +617,16 @@ function executeInsert(query){
           console.log(result);
           return false;
         });
+}
+
+function jsonToArr(json){
+  var data = [];
+  var fields = tableToImport.fields;
+
+  for(var i=0; i<fields.length; i++){
+    data.push(json.values[fields[i].name]);
+  }
+
+  return data;
+
 }

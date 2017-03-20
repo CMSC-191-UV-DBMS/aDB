@@ -238,7 +238,7 @@ function validate(data){
 
     if(data[row].length < fields.length){
       alert('Expected number of values not met by given data');
-      return;
+      return false;
     }
     else{
       // all columns have some value, even ''
@@ -251,7 +251,7 @@ function validate(data){
            data[row][index].length === 0){
 
           alert('Missing value for required column: '+req);
-          return;
+          return false;
         }
       }
 
@@ -272,13 +272,13 @@ function validate(data){
             value = parseFloat(value);
             if(typeof value !== 'number'){
               alert('Unexpected '+(typeof value)+' type for: '+field.name);
-              return;
+              return false;
             }
           break;
           case 'string':
             if(typeof value !== 'string'){
               alert('Unexpected '+(typeof value)+' type for: '+field.name);
-              return;
+              return false;
             }
           break;
           case 'enum':
@@ -286,7 +286,7 @@ function validate(data){
               case 'sem':
               if(field.possibleValues.indexOf(value) < 0){
                 alert('Unexpected enum value for: '+field.name);
-                return;
+                return false;
               }
               break;
             }
@@ -298,7 +298,7 @@ function validate(data){
           // specific format exists
           if(!isValidFormat(field.format, value)){
             alert('Invalid format for value: '+value+' at column: '+field.name);
-            return;
+            return false;
           }
           else{
             // value follows expected format
@@ -324,6 +324,8 @@ function validate(data){
 
     }
   }
+
+  return true;
 }
 
 function isValidFormat(format, value){
