@@ -213,7 +213,7 @@ function parseInsert(query){
 			alert("ERROR: Syntax error. No value between ',,'.");
 			return null;
 		}else{
-			parsedValues.push(values2[n]);
+			parsedValues.push(values2[n].replace(/\s/g,""));
 		}
 	}
 	
