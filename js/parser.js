@@ -32,8 +32,8 @@ function parse(){
               return;
        }
        else{
-              result = executeInsert(parsed­);
-       } 
+              result = executeInsert(parsed);
+       }
      }
 
     if(!hasErr && query.trim().toLowerCase().startsWith('select')){
@@ -414,7 +414,7 @@ function executeInsert(query){
   // };
 
   $.ajax({
-    url: '/tables/'+query.tablename,
+    url: '/tables/'+query.tablename.toLowerCase(),
     type: 'POST',
     dataType: 'json',
     data: JSON.stringify(query.values),
