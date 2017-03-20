@@ -1,18 +1,27 @@
 'use strict';
 const db = {};
-db.student = ['studno', 'studentname', 'birthday', 'degree', 'major', 'unitsearned'];
-db.studenthistory = ['studno', 'description', 'action', 'dateFiled', 'dateResolved'];
-db.course = ['cno', 'ctitle', 'cdesc', 'noofunits', 'haslab', 'semoffered'];
-db.courseoffering = ['semester', 'acadyear', 'cno', 'section', 'time', 'maxstud'];
-db.studcourse = ['studno', 'cno', 'semester', 'acadyear'];
+db.student = ['StudNo', 'StudentName', 'Birthday', 'Degree', 'Major', 'UnitsEarned'];
+db.studenthistory = ['StudNo', 'Description', 'Action', 'DateFiled','DateResolved'];
+db.course = ['CNo', 'CTitle', 'CDesc', 'NoOfUnits', 'HasLab', 'SemOffered'];
+db.courseoffering = ['Semester', 'AcadYear', 'CNo', 'Section', 'Time', 'MaxStud'];
+db.studcourse = ['StudNo', 'CNo', 'Semester', 'AcadYear'];
+
 
 
 function tableHasColumn(table, column) {
   for (let i = 0; i < db[table].length; i++) {
-    if(db[table][i] == column)
+    if(db[table][i].toLowerCase() == column.toLowerCase())
       return true;
   }
   return false;
+}
+
+function toCamelCase(table, column) {
+  for (let i = 0; i < db[table].length; i++) {
+    if(db[table][i].toLowerCase() == column.toLowerCase())
+      return db[table][i];
+  }
+  return null;
 }
 
 function tableExist(tableInQuery) {
@@ -33,7 +42,7 @@ function columnExist(column) {
     if (db.hasOwnProperty(table)) {
       // for each column
       for(let i=0; i<db[table].length; i+=1){
-        if(column == db[table][i]){
+        if(column.toLowerCase() == db[table][i].toLowerCase()){
           return true;
         }
       }
@@ -244,7 +253,13 @@ function parseSelect(query) {
           return null;
         }
 
-        let tempColumn = tokens[i];
+        // check if column in table
+        let tempColumn = toCamelCase(tableSelected[0], tokens[i]);
+        if(!tempColumn){
+          error([tokens[i], tableSelected[0]], 'no_column_found_in_table');
+          return null;
+        }
+
         i+=1;
         // expect equal sign ****
         if(tokens[i] != '='){
@@ -343,6 +358,7 @@ function parseSelect(query) {
         error([columnsSelected[i], tableSelected[0]], 'no_column_found_in_table');
         return null;
       }
+      columnsSelected[i] = toCamelCase(tableSelected[0], columnsSelected[i]);
     }
   }
 

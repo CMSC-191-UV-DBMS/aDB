@@ -192,10 +192,10 @@ function showHome(){
 }
 
 function trimQuotes(text){
-  if (text.charAt(0) === '"'){
-    text = text.substr(1)
+  if (text && text.toString().charAt(0) === '"'){
+    text = text.substr(1);
   }
-  if(text.charAt(text.length-1) === '"'){
+  if(text && text.toString().charAt(text.length-1) === '"'){
     text = text.substr(0, text.length-1);
   }
   return text;

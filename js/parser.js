@@ -127,6 +127,7 @@ function parse(){
         return;
       }
       else{
+        console.log(parsed);
         executeSelect(parsed);
       }
 
@@ -193,8 +194,8 @@ function executeSelect(query){
   var file = tables[query.tablename].path;
   console.log(file);
 
-  var file = eval(query.tablename.path);
-  console.log(file);
+  // var file = eval(query.tablename.path);
+ // console.log(file);             // ---- undefined when select * from student;
 
   // get from file
   readCSV(file)
@@ -205,7 +206,7 @@ function executeSelect(query){
             var headers = data[0];
             data = arrayToJson(data);
 
-            // console.log(data);
+            console.log(data);
 
             // filter data
             var whereCol = Object.keys(query.where)[0];
