@@ -81,6 +81,7 @@ function parseSelect(query) {
   let columnsSelected = [];
   let tableSelected = [];
   let whereClause = {};
+  let operator = '';
   let allColumns = false; // used if '*'
 
   /*
@@ -262,10 +263,14 @@ function parseSelect(query) {
 
         i+=1;
         // expect equal sign ****
-        if(tokens[i] != '='){
+        if(tokens[i] != '=' && tokens[i] != '!=' && tokens[i] != '<' && tokens[i] != '>' &&
+            tokens[i] != '<=' && tokens[i] != '>=' && tokens[i].toLowerCase() != 'like'){
             error(tokens[i], null);
             return null;
         }
+
+        operator = tokens[i].toLowerCase();
+
         // check if no next tokens
         if(i+1 == tokens.length){
           error(tokens[i], null);
@@ -363,9 +368,10 @@ function parseSelect(query) {
   }
 
   let result = {
-    tablename: tableSelected,
-    select: columnsSelected,
-    where: whereClause
+    'operator': operator,
+    'tablename': tableSelected,
+    'select': columnsSelected,
+    'where': whereClause
   };
 
   return result;
