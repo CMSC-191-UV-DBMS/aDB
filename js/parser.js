@@ -136,9 +136,40 @@ function executeSelect(query){
             var result = [];
             if(whereCol){
               for(var i=0; i<data.length; i++){
-                if(data[i][whereCol] === whereVal){
-                  result.push(data[i]);
+                for(var i=0; i<data.length; i++){
+                switch(whereOp){
+                  case '=':
+                    if(data[i][whereCol] === whereVal){
+                      result.push(data[i]);
+                    }
+                  break;
+                  case '>':
+                    if(data[i][whereCol] > whereVal){
+                      result.push(data[i]);
+                    }
+                  break;
+                  case '<':
+                    if(data[i][whereCol] < whereVal){
+                      result.push(data[i]);
+                    }
+                  break;
+                  case '>=':
+                    if(data[i][whereCol] >= whereVal){
+                      result.push(data[i]);
+                    }
+                  break;
+                  case '<=':
+                    if(data[i][whereCol] <= whereVal){
+                      result.push(data[i]);
+                    }
+                  break;
+                  case 'LIKE':
+                  console.log('do something');
+                  break;
                 }
+                // if(data[i][whereCol] === whereVal){
+                //   result.push(data[i]);
+                // }
               }
               // console.log(result);
             }
