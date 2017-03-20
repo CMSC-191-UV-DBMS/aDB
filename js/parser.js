@@ -114,8 +114,11 @@ function executeSelect(query){
   //   }
   // };
 
+  var file = eval(query.tablename.path);
+  console.log(file);
+
   // get from file
-  readCSV(tablePath[query.tablename])
+  readCSV(file)
     .then(
           (data) => {
             // console.log(data);
