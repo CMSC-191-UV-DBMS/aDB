@@ -20,10 +20,8 @@ function parse(){
   var msg = '<p class="alert alert-success">All queries done succesfully.</p>';
 
 
-  for(var i=0; i<!hasErr && lines.length; i++){
-
   for(var i=0; i<lines.length && !hasErr; i++){
-    while(!hasErr && multiline){ // assume query might be multiline
+    while(!hasErr && multiline && i<lines.length){ // assume query might be multiline
       if(!lines[i].trim().toLowerCase().startsWith('insert') &&
          !lines[i].trim().toLowerCase().startsWith('select')){
         query += lines[i++];
@@ -236,7 +234,7 @@ function parseInsert(query){
 
 
 	//Getting the column names
-	if(query[i].toLowerCase() == "v"){	
+	if(query[i].toLowerCase() == "v"){
 		for(var n = 0; n < tables[tablename.toLowerCase()].fields.length; n++){
 			parsedParameter.push(tables[tablename.toLowerCase()].fields[n].name);
 		}
@@ -266,7 +264,7 @@ function parseInsert(query){
 		else if(query[i] == " " ){
 			continue;
 		}
-		else 
+		else
 			break;
 	}
 

@@ -238,10 +238,10 @@ const max = {
   };
 
 
- var tables = {
-    course,
-    courseoffering,
-    student,
-    studenthistory,
-    studcourse
-  };
+ // var tables = {
+ //    course,
+ //    courseoffering,
+ //    student,
+ //    studenthistory,
+ //    studcourse
+ //  };
