@@ -87,7 +87,7 @@ function parseInsert(query){
 
 	if(insertWord.toLowerCase() != "insert"){
 		error = true;
-		return {err: true};
+		return {err: true, msg: "ERROR: Syntax error. Does not have any command."};
 	}
 
 	for (var m = i; m < query.length; m++) {
@@ -107,7 +107,7 @@ function parseInsert(query){
 
 	if(intoWord.toLowerCase() != "into"){
 		error = true;
-		return {err: true};
+		return {err: true, msg: "ERROR: Syntax error. Does not have 'into'"};
 	}
 
 
@@ -139,7 +139,7 @@ function parseInsert(query){
 	}
 
 
-	if(query[i] == "v"){	
+	if(query[i].toLowerCase() == "v"){	
 		for(var n = 0; n < tables[tablename.toLowerCase()].fields.length; n++){
 			parsedParameter.push(tables[tablename.toLowerCase()].fields[n].name);
 		}
@@ -157,7 +157,7 @@ function parseInsert(query){
 
 	}else{
 		error = true;
-		return {err: true};
+		return {err: true, mgs: "ERROR: Syntax Error. Column names not cited."};
 	}
 
 	var valueWord = "";
@@ -174,7 +174,7 @@ function parseInsert(query){
 
 	if(valueWord.toLowerCase() != "values"){
 		error = true;
-		return {err: true};
+		return {err: true, msg: "ERROR: Syntax error, does not have a 'VALUES'"};
 	}
 
 	var values = "";
@@ -200,7 +200,7 @@ function parseInsert(query){
 
 	if(parsedParameter.length != parsedValues.length){
 		error = true;
-		return {err:true};
+		return {err:true, msg: "ERROR: Columns and values does not match."};
 	}
 
 	for (var i = parsedParameter.length -1; i >= 0; i--) {
