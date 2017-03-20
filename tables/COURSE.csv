@@ -1,1 +1,15 @@
 CNo,CTitle,CDesc,NoOfUnits,HasLab,SemOffered
+<<<<<<< HEAD
+=======
+1,CMSC123,ASfas fasfsaf,3,6,1st
+2,CMSC143,asgc fasfsaf,3,7,2nd
+3,CMSC153,assgc fasfsaf,3,7,2nd
+4,CMSC113,asgc fasfsaf,3,7,2nd
+5,CMSC183,ascgc fasfsaf,3,7,1st
+6,CMSC129,asgc fasfsaf,3,6,1st
+7,CMSC124,ascgc fasfsaf,3,6,Sum
+8,CMSC122,ASfas fasfsaf,3,4,Sum
+9,CMSC125,AScfas fasfsaf,3,4,Sum
+10,CMSC103,ASfas fasfsaf,3,4,1st
+11,CMSC23,ASfcas fasfsaf,3,4,1st
+>>>>>>> io-fixes
