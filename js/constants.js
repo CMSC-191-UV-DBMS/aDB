@@ -236,3 +236,12 @@ const max = {
     courseoffering: courseoffering,
     course: course
   };
+
+
+ var tables = {
+    course,
+    courseoffering,
+    student,
+    studenthistory,
+    studcourse
+  };
