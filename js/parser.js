@@ -191,7 +191,7 @@ function parseInsert(query){
 	// values = values.replace('"',"");
 	// values = values.replace("'","");
 	var values2 = values.split(",");
-	for (var n = values2.length -1; n >= 0; n--) {
+	for (var n = 0; n < values2.length; n++) {
 		if (values2[n].indexOf("'") > -1 ){
 			if(values2[n].lastIndexOf("'") - values2[n].indexOf("'") != 1){
 				parsedValues.push(values2[n].slice(values2[n].indexOf("'")+1, values2[n].lastIndexOf("'") ));
@@ -210,6 +210,7 @@ function parseInsert(query){
 		}else{
 			parsedValues.push(values2[n]);
 		}
+	}
 	
 	parsedQuery = {
 		"tablename" : tablename,
