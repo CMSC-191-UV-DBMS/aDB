@@ -26,19 +26,15 @@ function parse(){
     }
 
     if(!hasErr && query.trim().toLowerCase().startsWith('insert')){
-      // handle insert query OR call insert query handler
-      parsed = parseInsert(query);
-      	console.log(parsed);
-      // if(parsed.err){
-      //   hasErr = true;
-      //   result.msg = parsed.msg;
-      //   result.hasErr = hasErr;
-      //   break;interact with csv since auto-commit
-      // result = executeInsert(parsed);
-      // }
-
-      //
-    }
+       // handle insert query OR call insert query handler
+       parsed = parseInsert(query);
+       if(!parsed){
+              return;
+       }
+       else{
+              result = executeInsert(parsed­);
+       } 
+     }
 
     if(!hasErr && query.trim().toLowerCase().startsWith('select')){
       // handle select query OR call select query handler
@@ -70,6 +66,7 @@ function parseInsert(query){
 	var error = false;
 	var i, j;
 
+	//Skipping the spaces
 	for (var m = 0; m < query.length; m++) {
 		if(query[m]!=" "){
 			i = m;
@@ -77,6 +74,7 @@ function parseInsert(query){
 		}
 	}
 
+	//Checking syntax of term "insert"
 	var insertWord = "";
 	for ( i = 0 ; i < query.length; i++) {
 		if(query[i] != " ")
@@ -86,10 +84,11 @@ function parseInsert(query){
 	}
 
 	if(insertWord.toLowerCase() != "insert"){
-		error = true;
-		return {err: true, msg: "ERROR: Syntax error. Does not have any command."};
+		alert("ERROR: Syntax error. Does not have any command.");
+		return null;
 	}
 
+	//Skipping the spaces
 	for (var m = i; m < query.length; m++) {
 		if(query[m]!=" "){
 			i = m;
@@ -97,6 +96,7 @@ function parseInsert(query){
 		}
 	}
 
+	//Checking syntax of term "into"
 	var intoWord = "";
 	for ( j = i  ; j < query.length; j++) {
 		if(query[j] != " ")
@@ -106,11 +106,12 @@ function parseInsert(query){
 	}
 
 	if(intoWord.toLowerCase() != "into"){
-		error = true;
-		return {err: true, msg: "ERROR: Syntax error. Does not have 'into'"};
+		alert("ERROR: Syntax error. Does not have 'into'");
+		return null;
 	}
 
 
+	//Skipping the spaces
 	for (var m = j; m < query.length; m++) {
 		if(query[m]!=" "){
 			j = m;
@@ -118,6 +119,7 @@ function parseInsert(query){
 		}
 	}
 
+	//Getting the table name
 	var tablename = "";
 
 	for ( i = j ; i < query.length; i++) {
@@ -131,6 +133,7 @@ function parseInsert(query){
 	var parameter = "";
 	var parsedParameter = [];
 
+	//Skipping the spaces
 	for (var m = i ; m < query.length; m++) {
 		if(query[m]!=" "){
 			i = m;
@@ -139,6 +142,7 @@ function parseInsert(query){
 	}
 
 
+	//Getting the column names
 	if(query[i].toLowerCase() == "v"){	
 		for(var n = 0; n < tables[tablename.toLowerCase()].fields.length; n++){
 			parsedParameter.push(tables[tablename.toLowerCase()].fields[n].name);
@@ -156,10 +160,11 @@ function parseInsert(query){
 		parsedParameter = parameter.split(",");
 
 	}else{
-		error = true;
-		return {err: true, mgs: "ERROR: Syntax Error. Column names not cited."};
+		alert("ERROR: Syntax Error. Column names not cited.");
+		return null;
 	}
 
+	//Checking syntax of term "values"
 	var valueWord = "";
 	for ( i = j + 1 ; i < query.length; i++) {
 		if(query[i] != " " && query[i] !="("){
@@ -173,10 +178,11 @@ function parseInsert(query){
 	}
 
 	if(valueWord.toLowerCase() != "values"){
-		error = true;
-		return {err: true, msg: "ERROR: Syntax error, does not have a 'VALUES'"};
+		alert("ERROR: Syntax error, does not have a 'VALUES'");
+		return null;
 	}
 
+	//Getting the values
 	var values = "";
 	for(j = i + 1; j < query.length ; j++){
 		if(query[j] == "(")
@@ -187,9 +193,8 @@ function parseInsert(query){
 			values = values + query[j];
 	}
 	
+	//This also gets the values that is empty string
 	var parsedValues = [];
-	// values = values.replace('"',"");
-	// values = values.replace("'","");
 	var values2 = values.split(",");
 	for (var n = 0; n < values2.length; n++) {
 		if (values2[n].indexOf("'") > -1 ){
@@ -205,24 +210,27 @@ function parseInsert(query){
 				parsedValues.push("");
 			}
 		}else if(values2[n] == "" || /^\s+$/.test(values[n]) ){
-
-			return {err: true , msg: "ERROR: Syntax error. No value between ',,'."}
+			alert("ERROR: Syntax error. No value between ',,'.");
+			return null;
 		}else{
 			parsedValues.push(values2[n]);
 		}
 	}
 	
+	//Creating the parsed query into an object
 	parsedQuery = {
 		"tablename" : tablename,
 		"params" : parsedParameter,
 		"values" : {}
 	}
 
+	//Checking if the number of columns is equal to the number of values stated in the query
 	if(parsedParameter.length != parsedValues.length){
-		error = true;
-		return {err:true, msg: "ERROR: Columns and values does not match."};
+		alert("ERROR: Columns and values does not match.");
+		return null;
 	}
 
+	//Populate parsedQuery
 	for (var i = parsedParameter.length -1; i >= 0; i--) {
 		parsedQuery.values[(parsedParameter[i])] = parsedValues[i];
 
