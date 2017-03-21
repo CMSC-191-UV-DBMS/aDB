@@ -27,13 +27,15 @@ const max = {
       name: 'NoOfUnits',
       type: 'number',
       enumType: '',
-      format: '\\d+',
+      // format: '\\d+',
+      format: '(\\d+)|(.{0})',
     },
     HasLab: {
       name: 'HasLab',
       type: 'number',
       enumType: '',
-      format: '\\d+',
+      // format: '\\d+',
+      format: '(\\d+)|(.{0})',
     },
     SemOffered: {
       name: 'SemOffered',
@@ -71,13 +73,14 @@ const max = {
       name: 'Time',
       type: 'string',
       enumType: '',
-      format: '([01][0-9]|2[0-3]):([0-5][0-9])',
+      format: '(([01][0-9]|2[0-3]):([0-5][0-9]))|(.{0})',
     },
     MaxStud: {
       name: 'MaxStud',
       type: 'number',
       enumType: '',
-      format: '\\d+',
+      // format: '\\d+',
+      format: '(\\d+)|(.{0})',
     },
     StudNo: {
       name: 'StudNo',
@@ -85,7 +88,7 @@ const max = {
       enumType: '',
       // format: '(19[0-9]{2}|20[01][0-7])-[0-9]{5}',
       // format: '([12][0-9]{3})-[0-9]{5}',
-      format: '([1-9][0-9]{3})-[0-9]{5}',
+      format: '(([1-9][0-9]{3})-[0-9]{5})|(.{0})',
     },
     StudentName: {
       name: 'StudentName',
@@ -99,7 +102,7 @@ const max = {
       enumType: '',
       // format: '(1[0-9]{3}|20[01][0-7])-(0[1-9]|1[0-2])-([012][0-9]|3[0-1])',
       // format: '([12][0-9]{3})-(0[1-9]|1[0-2])-([012][0-9]|3[0-1])',
-      format: '([1-9][0-9]{3})-(0[1-9]|1[0-2])-([012][0-9]|3[0-1])',
+      format: '(([1-9][0-9]{3})-(0[1-9]|1[0-2])-([012][0-9]|3[0-1]))|(.{0})',
     },
     Degree: {
       name: 'Degree',
@@ -117,7 +120,8 @@ const max = {
       name: 'UnitsEarned',
       type: 'number',
       enumType: '',
-      format: '\\d+',
+      // format: '\\d+',
+      format: '(\\d+)|(.{0})',
     },
     Description: {
       name: 'Description',
