@@ -69,7 +69,7 @@ function csvToArray(csvStr){
 
     for(var rowCell=0; rowCell<rowCells.length; rowCell++){
       content = trimQuotes(rowCells[rowCell]);
-      if(!isNaN(content)){
+      if(!isNaN(content) && content.length){
         content = parseInt(content);
       }
       row.push(content);
@@ -277,7 +277,7 @@ function validate(data){
           break;
           case 'string':
             if(typeof value !== 'string'){
-              alert('Unexpected '+(typeof value)+' type for: '+field.name);
+              alert('Unexpected '+(typeof value)+' type for: '+value+' at column '+field.name);
               return false;
             }
           break;
