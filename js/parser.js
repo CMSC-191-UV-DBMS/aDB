@@ -323,8 +323,11 @@ function parseInsert(query){
 		}else if(values2[n] == "" || /^\s+$/.test(values[n]) ){
 			alert("ERROR: Syntax error. No value between ',,'.");
 			return null;
-		}else{
+		}else if(!isNan(values2[n].parseInt())){
 			parsedValues.push(values2[n].replace(/\s/g,""));
+		}else{
+			alert("ERROR: Syntax error. Missing quotations");
+			return null;
 		}
 	}
 
