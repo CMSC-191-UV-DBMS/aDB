@@ -276,7 +276,7 @@ function validate(data){
             }
           break;
           case 'string':
-            if(typeof value !== 'string'){
+            if(typeof value !== 'string' && field.name !== 'AcadYear'){
               alert('Unexpected '+(typeof value)+' type for: '+value+' at column '+field.name);
               return false;
             }

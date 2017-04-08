@@ -126,7 +126,7 @@ function parseSelect(query) {
         continue;
       }
       // one table
-      else if(/^[a-z]+$/.test(tokens[i])){
+      else if(/^[a-zA-Z]+$/.test(tokens[i])){
         if(!columnExist(tokens[i])){
           error(tokens[i], 'column_does_not_exist');
           return null;
@@ -141,10 +141,10 @@ function parseSelect(query) {
         continue;
       }
       // multiple table columns
-      else if(/^[a-z]+,$/.test(tokens[i])){
+      else if(/^[a-zA-Z]+,$/.test(tokens[i])){
         let column = '';
         // get all table columns
-        for(; (/^[a-z]+,$/.test(tokens[i])); i+=1){
+        for(; (/^[a-zA-Z]+,$/.test(tokens[i])); i+=1){
           column = tokens[i].replace(',','');
           if(!columnExist(column)){
             error(tokens[i], 'column_does_not_exist');
@@ -153,7 +153,7 @@ function parseSelect(query) {
           columnsSelected.push(column);
         }
         // check last table column
-        if(!/^[a-z]+$/.test(tokens[i]) || !columnExist(tokens[i])){
+        if(!/^[a-zA-Z]+$/.test(tokens[i]) || !columnExist(tokens[i])){
           error(tokens[i], 'column_does_not_exist');
           return null;
         }
@@ -187,7 +187,7 @@ function parseSelect(query) {
     *  NOTE: only 1 table is accepted
     *********************************************************/
     else if(fromDone && !tableDone){
-      if(/[a-z]+(;)?/.test(tokens[i])){
+      if(/[a-zA-Z]+(;)?/.test(tokens[i])){
 
         if(tokens[i].endsWith(';')){
           tokens[i] = tokens[i].replace(';', '');
@@ -242,7 +242,7 @@ function parseSelect(query) {
     *********************************************************/
     else if(!queryDone && whereDone){
       // expect one tableColumn ****
-      if(/^[a-z]+$/.test(tokens[i])){
+      if(/^[a-zA-Z]+$/.test(tokens[i])){
         if(!columnExist(tokens[i])){
           error(tokens[i], 'column_does_not_exist');
           return null;
