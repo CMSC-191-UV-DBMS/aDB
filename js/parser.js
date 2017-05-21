@@ -11,7 +11,7 @@ function parse(){
   }
 
   var multiline = true;
-  var lines = text.split('\n');
+  var lines = text.trim().split('\n');
   var query = lines[0];
   var parsed = {};
   var hasErr = false;
@@ -39,28 +39,19 @@ function parse(){
     }
 
     if(!hasErr && query.trim().toLowerCase().startsWith('insert')){
-      // handle insert query OR call insert query handler
       parsed = parseInsert(query);
-      // console.log(parsed);
-      // console.log(query);
       if(!parsed){
         return;
       }
       else{
-        result = executeInsert(parsed);
-
-        // console.log(tables);
-        // console.log(query);
-
         tableToImport = tables[parsed['tablename'].toLowerCase()];
-        // console.log(tableToImport);
 
-        // build array
         var dataArr = jsonToArr(parsed);
-        // console.log(dataArr);
 
-        result = validate([dataArr]);
-        if(result){
+        parsed = validate([dataArr]);
+        result = executeInsert(parsed, i);
+
+        if(parsed){
           $('#main').append(div);
         }
         else{
@@ -71,87 +62,7 @@ function parse(){
     }
 
     if(!hasErr && query.trim().toLowerCase().startsWith('select')){
-      // handle select query OR call select query handler
-      // parsed = parseSelect(query);
-
-      // if(parsed.err){
-      //   hasErr = true;
-      //   result.msg = parsed.msg;
-      //   result.hasErr = hasErr;
-      //   break;
-      // }
-
-      // interact with csv since auto-commit
-      // results = executeSelect(parsed);
-
-      // sample query = select name, age, date from tablename;
-      // var index;
-      // var tokens = query.split(" "); // contains "select", "name,", "age,", "date", "from", and "tablename;"
-      // var tablename;
-      // var attribs = [];
-      // for(index=0;index<tokens.length - 1;index++){
-      //   if(tokens[index] == "select" || tokens[index] == "from"){
-      //     continue;
-      //   }
-      //   else{
-      //     var attr = tokens[index];
-      //     	if(attr.endsWith(",")){
-      //       	attr = attr.substr(0, attr.length-1);  // removal of commas at the end of attribs
-      //           // stringSample += "ATTR SUBSTR: "+ attr;
-      //           attrib.push(attr);
-      //       }
-      //       else{
-      //           // stringSample += "ATTR SUBSTR: "+ attr;
-      //           attrib.push(attr);
-      //       }
-      //   }
-      // }
-      // tablename = tokens[tokens.length-1];
-      // tablename = tablename.substr(0, tablename.length-1);
-      // result = "{\n\t{\n\t\tattrib:"+attrib+";\n\t\ttablename:"+tablename+";\n\t}\n}";
-
-
-    //var query = "select name from student;"; // this is the sample query
-    // var tokens = query.split(" ");
-    // var num = tokens.length;
-    // var index;
-    // var tablename;
-    // var attrib = [];
-    // var stringSample = "";  // for viewing elements of the JSONObject
-
-    // for(index=0;index<tokens.length-1;index++){
-    //   if(tokens[index] == "select" || tokens[index] == "from"){
-    //     continue;
-    //   }
-    //   else{
-    //   	var attr = tokens[index];
-    //   	if(attr.endsWith(",")){  // removal of commas at the end of multiple attribs
-    //     	attr = attr.substr(0, attr.length-1);
-    //         attrib.push(attr);
-    //     }
-    //     else{
-    //         attrib.push(attr);
-    //     }
-    //   }
-    // }
-    // tablename = tokens[tokens.length-1];
-    // tablename = tablename.substr(0, tablename.length-1);
-
-    // //stringSample += attrib + "<br>" + tablename;
-    // /*
-    // result string
-    // {
-    //     {
-    //         attrib: ;
-    //         tablename:
-    //     }
-    // }
-    // */
-
-    // result = "{\n\t{\n\t\tattrib:"+attrib+";\n\t\ttablename:"+tablename+"\n\t}\n}";
-    // alert(result);
       parsed = parseSelect(query);
-      // console.log(parsed);
 
       if(!parsed){
         return;
@@ -160,18 +71,11 @@ function parse(){
         console.log(parsed);
         executeSelect(parsed);
       }
-
     }
 
     query = '';
     parsed = '';
   }
-
-  // test select, modify 'parsed' data in function for now
-  // executeSelect({});
-
-  // test append, modify 'parsed' data in function for now
-  // executeInsert({});
 
   div.innerHTML = msg;
   $('#main').html(div);
@@ -195,48 +99,15 @@ function executeSelect(query){
   var div = document.createElement('div');
   div.setAttribute('id', 'tableView');
 
-  // expected format & sample equivalent queries
-
-  // SELECT * FROM student;
-  // query = {
-  //   tablename: 'student',
-  //   select: [
-  //     'StudNo', 'StudentName', 'Birthday', 'Degree', 'Major', 'UnitsEarned'
-  //   ],
-  //   where: {}
-  // };
-
-  // SELECT StudNo, StudentName, Birthday, Degree FROM student where UnitsEarned = 78;
-  // query = {
-  //   tablename: 'student',
-  //   select: [
-  //     'StudNo', 'StudentName', 'Birthday', 'Degree'
-  //   ],
-  //   where: {
-  //     'UnitsEarned' : '78'
-  //   }
-  // };
-
-  // SELECT StudNo FROM student where UnitsEarned = 74;
-  // query = {
-  //   tablename: 'student',
-  //   select: ['StudNo'],
-  //   where: {
-  //     'UnitsEarned': "74"
-  //   }
-  // };
   var file = tables[query.tablename].path;
   console.log(file);
 
-  // var file = eval(query.tablename.path);
- // console.log(file);             // ---- undefined when select * from student;
+  // console.log(file);             // ---- undefined when select * from student;
 
   // get from file
   readCSV(file)
     .then(
           (data) => {
-            // console.log(data);
-
             var headers = data[0];
             data = arrayToJson(data);
 
@@ -318,12 +189,8 @@ function executeSelect(query){
                     console.log('do something');
                     break;
                   }
-                // if(data[i][whereCol] === whereVal){
-                //   result.push(data[i]);
-                // }
                 }
               }
-              // console.log(result);
             }
             else{
               result = data;
@@ -339,7 +206,6 @@ function executeSelect(query){
               }
               data.push(row);
             }
-            // console.log(data);
 
             var table = buildView(data);
             div.innerHTML = table;
@@ -361,70 +227,6 @@ function executeSelect(query){
 }
 
 function executeInsert(query){
-
-  // expected format:
-
-  // student
-  // query = {
-  //   tablename: 'student',
-  //   values: {
-  //     'StudNo' : '2013-13579',
-  //     'StudentName' : 'Carmela',
-  //     'Birthday' : '7-14-1996',
-  //     'Degree' : 'BSCS',
-  //     'UnitsEarned' : '144'
-  //   }
-  // };
-
-  // course
-  // query = {
-  //   tablename: 'course',
-  //   values: {
-  //     'No': 'CMSC 142',
-  //     'CTitle': 'Analysis of Algorithms',
-  //     'CDesc': 'Big O',
-  //     'NoOfUnits': 3,
-  //     'HasLab': 1,
-  //     'SemOffered': '1st'
-  //   }
-  // };
-
-  // courseoffering
-  // query = {
-  //   tablename: 'courseoffering',
-  //   values: {
-  //     'Semester': '1st',
-  //     'AcadYear': 2016,
-  //     'CNo': 'CMSC 142',
-  //     'Section': 'UV',
-  //     'Time': '16:00',
-  //     'MaxStud': 100
-  //   }
-  // };
-
-  // studcourse
-  // query = {
-  //   tablename: 'studcourse',
-  //   values: {
-  //     'StudNo': '2013-24680',
-  //     'CNo': 'CMSC 142',
-  //     'Semester': '1st',
-  //     'AcadYear': 2016,
-  //   }
-  // };
-
-  // studenthistory
-  // query = {
-  //   tablename: 'studenthistory',
-  //   values: {
-  //     'StudNo': '2013-24680',
-  //     'Description': 'Drop',
-  //     'Action': 'Rejected',
-  //     'DateFiled': '2017-02-28',
-  //     'DateResolved': '2017-03-11'
-  //   }
-  // };
-
   $.ajax({
     url: '/tables/'+query.tablename.toLowerCase(),
     type: 'POST',
