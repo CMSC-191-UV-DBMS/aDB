@@ -320,8 +320,8 @@ function validate(data){
 
       // console.log(query);
       // at this point query object is ready for insert
-      // executeInsert(query);
-      return query;
+      executeInsert(query);
+      // return query;
     }
   }
 

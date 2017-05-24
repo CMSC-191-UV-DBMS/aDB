@@ -23,10 +23,12 @@ function parse(){
   div.setAttribute('id', 'tableView');
 
   for(var i=0; i<lines.length && !hasErr; i++){
+    query = lines[i];
+
     while(!hasErr && multiline && i<lines.length){ // assume query might be multiline
       if(!lines[i].trim().toLowerCase().startsWith('insert') &&
          !lines[i].trim().toLowerCase().startsWith('select')){
-        query += lines[i++];
+        query += lines[++i];
       }
       else{
         break; // start handling the built query
@@ -49,7 +51,7 @@ function parse(){
         var dataArr = jsonToArr(parsed);
 
         parsed = validate([dataArr]);
-        result = executeInsert(parsed, i);
+        // result = executeInsert(parsed);
 
         if(parsed){
           $('#main').append(div);
@@ -75,6 +77,7 @@ function parse(){
 
     query = '';
     parsed = '';
+    result = '';
   }
 
   div.innerHTML = msg;
